@@ -18,6 +18,15 @@ Matrix3::Matrix3(double n11,  double n12, double n13,
 
 }
 
+Matrix3::Matrix3(Matrix3& ref){
+	elements = new double[9];
+
+	for (int i = 0; i < 9; ++i){
+		elements[i] = ref.elements[i];
+	}
+
+}
+
 Matrix3::~Matrix3(){
 	delete[] elements;
 }
@@ -48,18 +57,21 @@ Matrix3& Matrix3::identity(){
 
 }
 
-Vector3& Matrix3::operator*(Vector3& v){
+std::vector<Vector3>& Matrix3::operator*(std::vector<Vector3>& vectors){
 
-	v.applyMatrix3(this);
-	return v;
+	for (Vector3 v : vectors){
+		v.applyMatrix3(*this);
+	}
+
+	return vectors;
 
 }
 
 Matrix3& Matrix3::operator*(double s){
 
-	Matrix3 m = *this;
-	m *= s;
-	return m;
+	Matrix3* m = new Matrix3(*this);
+	*m *= s;
+	return *m;
 
 }
 
@@ -127,8 +139,8 @@ bool Matrix3::operator==(const Matrix3& rhs) const{
 
 }
 
-double Matrix3::operator[](unsigned index){
-	return elements[index];
+const double* Matrix3::toArray() const{
+	return elements;
 }
 
 

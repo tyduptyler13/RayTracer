@@ -6,7 +6,11 @@
 
 #include <math.h>
 
-#include "Matrix4.hpp"
+//#include "Matrix3.hpp" Cyclic
+class Matrix3;
+//#include "Matrix4.hpp" Cyclic
+class Matrix4;
+
 
 class Vector3{
 
@@ -15,26 +19,29 @@ public:
 
 	Vector3();
 	Vector3(double x, double y, double z);
+	Vector3(Vector3&);
+
+	Vector3& set(double, double, double);
 
 	Vector3& operator=(const Vector3&) const;
 
-	Vector3& operator+(double);
+	Vector3* operator+(double);
 	Vector3& operator+=(double);
-	Vector3& operator+(Vector3&);
+	Vector3* operator+(Vector3&);
 	Vector3& operator+=(Vector3&);
 
-	Vector3& operator-(double);
+	Vector3* operator-(double);
 	Vector3& operator-=(double);
-	Vector3& operator-(Vector3&);
+	Vector3* operator-(Vector3&);
 	Vector3& operator-=(Vector3&);
 
-	Vector3& operator*(double);
+	Vector3* operator*(double);
 	Vector3& operator*=(double);
-	Vector3& operator*(Vector3&);
+	Vector3* operator*(Vector3&);
 	Vector3& operator*=(Vector3&);
 
-	Vector3& applyMatrix3(Matrix3&);
-	Vector3& applyMatrix4(Matrix4&);
+	Vector3& applyMatrix3(const Matrix3&);
+	Vector3& applyMatrix4(const Matrix4&);
 
 	Vector3& operator/=(Vector3&);
 	Vector3& operator/=(double);
@@ -64,9 +71,9 @@ public:
 	};
 
 	bool operator==(const Vector3&) const;
-	bool operator!=(const Vector3& v) const;
-
-	Vector3& clone();
+	bool operator!=(const Vector3& v) const{
+		return !(*this == v);
+	};
 
 };
 

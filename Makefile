@@ -19,13 +19,13 @@ RayCaster.o: Vector4.o Vector3.o Matrix4.o Matrix3.o Sphere.o Ray.o RayCaster.cp
 Vector4.o: Vector4.cpp
 	$(CC) $(FLAGS) -c Vector4.cpp
 
-Vector3.o: Vector3.cpp
+Vector3.o: Vector3.cpp Matrix3.hpp Matrix4.hpp
 	$(CC) $(FLAGS) -c Vector3.cpp 
 
 Matrix4.o: Matrix4.cpp
 	$(CC) $(FLAGS) -c Matrix4.cpp
 
-Matrix3.o: Matrix3.cpp
+Matrix3.o: Matrix3.cpp Vector3.hpp
 	$(CC) $(FLAGS) -c Matrix3.cpp
 
 Sphere.o: Sphere.cpp
