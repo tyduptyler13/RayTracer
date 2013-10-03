@@ -19,54 +19,54 @@ public:
 
 	Vector3();
 	Vector3(double x, double y, double z);
-	Vector3(Vector3&);
+	Vector3(const Vector3&);
 
 	Vector3& set(double, double, double);
 
-	Vector3& operator=(const Vector3&) const;
+	Vector3& operator=(const Vector3&);
 
-	Vector3* operator+(double);
+	Vector3* operator+(double) const;
 	Vector3& operator+=(double);
-	Vector3* operator+(Vector3&);
-	Vector3& operator+=(Vector3&);
+	Vector3* operator+(const Vector3&) const;
+	Vector3& operator+=(const Vector3&);
 
-	Vector3* operator-(double);
+	Vector3* operator-(double) const;
 	Vector3& operator-=(double);
-	Vector3* operator-(Vector3&);
-	Vector3& operator-=(Vector3&);
+	Vector3* operator-(const Vector3&) const;
+	Vector3& operator-=(const Vector3&);
 
-	Vector3* operator*(double);
+	Vector3* operator*(double) const;
 	Vector3& operator*=(double);
-	Vector3* operator*(Vector3&);
-	Vector3& operator*=(Vector3&);
+	Vector3* operator*(const Vector3&) const;
+	Vector3& operator*=(const Vector3&);
 
 	Vector3& applyMatrix3(const Matrix3&);
 	Vector3& applyMatrix4(const Matrix4&);
 
-	Vector3& operator/=(Vector3&);
+	Vector3& operator/=(const Vector3&);
 	Vector3& operator/=(double);
 
 	Vector3& negate();
 
-	double dot(Vector3& v){
+	double dot(const Vector3& v) const{
 		return x * v.x + y * v.y + z * v.z;
 	};
 
-	double lengthSq(){
+	double lengthSq() const{
 		return x * x + y * y + z * z;
 	};
 
-	double length(){
+	double length() const{
 		return sqrt(this->lengthSq());
 	}
 
 	Vector3& normalize();
 
-	Vector3& cross(Vector3&);
-	Vector3& crossVectors(Vector3&, Vector3&);
+	Vector3* cross(const Vector3&) const;
+	Vector3& crossVectors(const Vector3&, const Vector3&);
 
-	double distanceToSquared(Vector3&);
-	double distanceTo(Vector3& v){
+	double distanceToSquared(const Vector3&) const;
+	double distanceTo(const Vector3& v) const{
 		return sqrt(this->distanceToSquared(v));
 	};
 

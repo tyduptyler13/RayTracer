@@ -17,6 +17,7 @@ public:
 			double n31, double n32, double n33, double n34,
 			double n41, double n42, double n43, double n44);
 	Matrix4(Matrix4&);
+	~Matrix4();
 
 	Matrix4& set(double n11, double n12, double n13, double n14,
 			double n21, double n22, double n23, double n24,
@@ -43,7 +44,9 @@ public:
 		);
 		return *this;
 	}
+
 	//TODO Rotations. Not needed yet.
+
 	Matrix4& makeScale(double x, double y, double z){
 		this->set(
 				x, 0, 0, 0,

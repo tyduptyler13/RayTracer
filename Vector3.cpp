@@ -7,10 +7,9 @@ Vector3::Vector3(){
 	x = y = z = 0;
 }
 
-Vector3::Vector3(double x, double y, double z) :
-									x(x), y(y), z(z){}
+Vector3::Vector3(double x, double y, double z) : x(x), y(y), z(z){}
 
-Vector3::Vector3(Vector3& v){
+Vector3::Vector3(const Vector3& v){
 	this->x = v.x;
 	this->y = v.y;
 	this->z = v.z;
@@ -24,19 +23,27 @@ Vector3& Vector3::set(double x, double y, double z){
 	return *this;
 }
 
-Vector3* Vector3::operator+(Vector3& v){
+Vector3& Vector3::operator=(const Vector3& v){
+	x = v.x;
+	y = v.y;
+	z = v.z;
+
+	return *this;
+}
+
+Vector3* Vector3::operator+(const Vector3& v) const{
 	Vector3* ret = new Vector3(*this);
 	*ret += v;
 	return ret;
 }
 
-Vector3* Vector3::operator+(double s){
+Vector3* Vector3::operator+(double s) const{
 	Vector3* ret = new Vector3(*this);
 	*ret += s;
 	return ret;
 }
 
-Vector3& Vector3::operator+=(Vector3& v){
+Vector3& Vector3::operator+=(const Vector3& v){
 	x += v.x;
 	y += v.y;
 	z += v.z;
@@ -52,13 +59,13 @@ Vector3& Vector3::operator+=(double s){
 	return *this;
 }
 
-Vector3* Vector3::operator-(Vector3& v){
+Vector3* Vector3::operator-(const Vector3& v) const{
 	Vector3* tmp = new Vector3(*this);
 	*tmp -= v;
 	return tmp;
 }
 
-Vector3& Vector3::operator-=(Vector3& v){
+Vector3& Vector3::operator-=(const Vector3& v){
 	x -= v.x;
 	y -= v.y;
 	z -= v.z;
@@ -66,7 +73,7 @@ Vector3& Vector3::operator-=(Vector3& v){
 	return *this;
 }
 
-Vector3* Vector3::operator-(double s){
+Vector3* Vector3::operator-(double s) const{
 	Vector3* tmp = new Vector3(*this);
 	*tmp -= s;
 	return tmp;
@@ -80,13 +87,13 @@ Vector3& Vector3::operator-=(double s){
 	return *this;
 }
 
-Vector3* Vector3::operator*(Vector3& v){
+Vector3* Vector3::operator*(const Vector3& v) const{
 	Vector3* tmp = new Vector3(*this);
 	*tmp *= v;
 	return tmp;
 }
 
-Vector3& Vector3::operator*=(Vector3& v){
+Vector3& Vector3::operator*=(const Vector3& v){
 	x *= v.x;
 	y *= v.y;
 	z *= v.z;
@@ -94,7 +101,7 @@ Vector3& Vector3::operator*=(Vector3& v){
 	return *this;
 }
 
-Vector3* Vector3::operator*(double s){
+Vector3* Vector3::operator*(double s) const{
 	Vector3* tmp = new Vector3(*this);
 	*tmp *= s;
 	return tmp;
@@ -156,7 +163,7 @@ Vector3& Vector3::operator/=(double s){
 	return *this;
 }
 
-Vector3& Vector3::operator/=(Vector3& v){
+Vector3& Vector3::operator/=(const Vector3& v){
 	x /= v.x;
 	y /= v.y;
 	z /= v.z;
@@ -172,15 +179,17 @@ Vector3& Vector3::normalize(){
 	return *this/=this->length();
 }
 
-Vector3& Vector3::cross(Vector3& v){
-	x = y * v.z - z * v.y;
-	y = z * v.x - x * v.z;
-	z = x * v.y - y * v.x;
+Vector3* Vector3::cross(const Vector3& v) const{
+	Vector3* ret = new Vector3();
 
-	return *this;
+	ret->x = y * v.z - z * v.y;
+	ret->y = z * v.x - x * v.z;
+	ret->z = x * v.y - y * v.x;
+
+	return ret;
 }
 
-Vector3& Vector3::crossVectors(Vector3& a, Vector3& b){
+Vector3& Vector3::crossVectors(const Vector3& a, const Vector3& b){
 	x = a.y * b.z - a.z * b.y;
 	y = a.z * b.x - a.x * b.z;
 	z = a.x * b.y - a.y * b.x;
@@ -188,7 +197,7 @@ Vector3& Vector3::crossVectors(Vector3& a, Vector3& b){
 	return *this;
 }
 
-double Vector3::distanceToSquared(Vector3& v){
+double Vector3::distanceToSquared(const Vector3& v) const{
 	double dx = x - v.x;
 	double dy = y - v.y;
 	double dz = z - v.z;

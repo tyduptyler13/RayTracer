@@ -3,7 +3,7 @@
 
 Matrix3::Matrix3(){
 	elements = new double[9];
-	this->identity();
+	identity();
 }
 
 Matrix3::Matrix3(double n11,  double n12, double n13,
