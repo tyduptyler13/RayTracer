@@ -13,6 +13,7 @@ class Scene{
 public:
 
 	Scene();
+	~Scene();
 
 	void addObject(Sphere* s);
 	void removeObject(Sphere* s);

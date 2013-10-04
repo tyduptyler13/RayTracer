@@ -1,6 +1,8 @@
 #ifndef SPHERE_HPP__
 #define SPHERE_HPP__
 
+#include<string>
+
 #include "Vector3.hpp"
 
 class Sphere{
@@ -8,6 +10,8 @@ class Sphere{
 public:
 	double radius;
 	Vector3 center;
+	std::string name;//Here only for debugging.
+	float color[3];
 
 	Sphere();
 	Sphere(Vector3& center, double radius);

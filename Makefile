@@ -10,7 +10,7 @@ all: build
 clean:
 	rm -f *.o $(TARGET)
 
-build: Math.o Scene.o RayTracer.cpp
+build: Math.o Renderer.o Sphere.hpp Scene.hpp Camera.hpp RayTracer.cpp
 	$(CC) $(FLAGS) Math.o Scene.o RayTracer.cpp -o $(TARGET)
 	
 RayCaster.o: RayCaster.cpp
@@ -18,6 +18,12 @@ RayCaster.o: RayCaster.cpp
 
 Math.o: Vector4.o Vector3.o Matrix4.o Matrix3.o Ray.o Sphere.o
 	ld -r Vector4.o Vector3.o Matrix4.o Matrix3.o Ray.o Sphere.o -o Math.o
+
+Renderer.o: Sphere.o Scene.o Camera.o
+	ld -r Sphere.o Scene.o Camera.o -o Renderer.o
+
+Camera.o: Camera.cpp Camera.hpp
+	$(CC) $(FLAGS) -c Camera.cpp
 
 Vector4.o: Vector4.cpp Vector4.hpp
 	$(CC) $(FLAGS) -c Vector4.cpp
