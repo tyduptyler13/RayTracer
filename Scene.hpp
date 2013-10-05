@@ -3,20 +3,24 @@
 
 #include <vector>
 
-#include "Sphere.hpp"
+#include "Object.hpp"
+#include "Camera.hpp"
 
 class Scene{
 
-	std::vector<Sphere*> objects;
-	//TODO lights, fog, polymorphic objects
+	std::vector<Object*> objects;
+	std::vector<Camera*> cameras;
 
 public:
 
 	Scene();
 	~Scene();
 
-	void addObject(Sphere* s);
-	void removeObject(Sphere* s);
+	void addObject(Object* s);
+	void removeObject(Object* s);
+
+	void addCamera(Camera* c);
+	void removeCamera(Camera* c);
 
 };
 

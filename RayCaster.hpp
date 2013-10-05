@@ -8,7 +8,9 @@
 #ifndef RAYCASTER_HPP_
 #define RAYCASTER_HPP_
 
+class RayCaster{
 
+};
 
 
 #endif /* RAYCASTER_HPP_ */

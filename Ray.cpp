@@ -88,7 +88,7 @@ double Ray::distanceToPoint(const Vector3& point) const{
 }
 
 bool Ray::isIntersectionSphere(const Sphere& sphere) const{
-	return (distanceToPoint(sphere.center) <= sphere.radius);
+	return (distanceToPoint(sphere.position) <= sphere.radius);
 }
 
 bool Ray::operator ==(const Ray& r) const{

@@ -48,6 +48,8 @@ void parseObj(std::string& filename){
 
 	while(std::getline(file, line)){
 
+		if (line.length() == 0) continue;//Empty line.
+
 		std::vector<std::string> parts = split(line, ' ');
 
 		if (parts.size() != 9){
@@ -81,11 +83,8 @@ void parseObj(std::string& filename){
 				Vector3 v = Vector3(x, y, z);
 				Sphere* s = new Sphere(v, r);
 				s->name = parts[1];
-				float color [3] = { red, blue, green };
 
-				for (int i = 0; i < 3; ++i){
-					s->color[i] = color[i];
-				}
+				s->setColor(red, green, blue);
 
 			} else {
 
@@ -102,7 +101,43 @@ void parseObj(std::string& filename){
 void parseCmd(std::string& filename){
 	std::ifstream file(filename);
 
+	std::string line;
 
+	while(std::getline(file, line)){
+
+		if (line.length() == 0) continue;//Empty line.
+
+		std::vector<std::string> parts = split(line, ' ');
+
+		if (parts.size() == 10){
+
+			if (parts[0] == "c"){
+
+				//TODO Add cameras.
+
+			} else {
+
+				std::cout << "A line was not regonized! (" << filename << ") "
+						<< line << std::endl;
+
+			}
+
+		} else if (parts.size() == 5){
+
+			if (parts[0] == "r"){
+
+				//TODO tell cameras to render.
+
+			} else {
+
+				std::cout << "A line was not regonized! (" << filename << ") "
+						<< line << std::endl;
+
+			}
+
+		}
+
+	}
 
 }
 
@@ -132,6 +167,22 @@ int main(int argc, char** argv){
 			std::string arg = std::string(argv[i]);
 
 			if (matches(arg, std::string("*.obj$"))){
+
+				parseObj(arg);
+
+			} else if (arg == "-c"){
+
+				if (i + 1 < argc){
+
+					arg = std::string(argv[++i]);
+
+					parseCmd(arg);
+
+				} else {
+
+					std::cout << "Expected an argument after '-c'. This parameter will be ignored!" << std::endl;
+
+				}
 
 			}
 
