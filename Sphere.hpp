@@ -47,7 +47,7 @@ public:
 		return (point.distanceTo(position) <= radius);
 	}
 
-	Vector3& getIntersection(const Ray& r, const Vector3& point, Vector3& in) const;
+	bool getIntersection(const Ray& r, Intersect& i) const;
 
 };
 

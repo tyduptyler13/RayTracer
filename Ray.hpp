@@ -25,8 +25,8 @@ public:
 
 	Ray& set(const Vector3& origin, const Vector3& direction);
 	Ray& operator=(const Ray&);
-	std::unique_ptr<Vector3> at(double);
-	std::unique_ptr<Vector3> at(double, Vector3*);
+	std::unique_ptr<Vector3> at(double) const;
+	std::unique_ptr<Vector3> at(double, Vector3*) const;
 	Ray& recast(double t);
 	std::unique_ptr<Vector3> closestPointToPoint(const Vector3& point,  Vector3* target) const;
 	double distanceToPoint(const Vector3&) const;

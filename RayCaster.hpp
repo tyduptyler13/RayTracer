@@ -9,6 +9,7 @@
 #define RAYCASTER_HPP_
 
 #include <vector>
+#include <memory>
 
 #include "ImageTools.hpp"
 #include "Object.hpp"
@@ -19,7 +20,7 @@
 #define NotFinishedError 12
 
 struct Match{
-	Vector3 intersect;
+	Intersect intersect;
 	Object* object;
 };
 
@@ -31,7 +32,7 @@ struct Result{
 class RayCaster{
 
 	const std::vector<Object*>* const objects;
-	std::vector<Match*> matches;
+	std::vector<Match> matches;
 	Ray r;
 	Result result;
 	double far, near;

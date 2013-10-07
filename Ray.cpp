@@ -36,12 +36,12 @@ Ray& Ray::operator=(const Ray& r){
 	return *this;
 }
 
-std::unique_ptr<Vector3> Ray::at(double t){
+std::unique_ptr<Vector3> Ray::at(double t) const{
 	Vector3* v = new Vector3();
 	return at(t, v);
 }
 
-std::unique_ptr<Vector3> Ray::at(double t, Vector3* target){
+std::unique_ptr<Vector3> Ray::at(double t, Vector3* target) const{
 	((*target = direction) *= t) += origin;
 	return std::unique_ptr<Vector3>(target);
 }

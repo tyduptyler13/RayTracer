@@ -10,10 +10,20 @@
 
 #include<string>
 #include<vector>
+#include <memory>
 
 #include "Vector3.hpp"
 #include "ImageTools.hpp"
 #include "Ray.hpp"
+
+/**
+ * Distance is the distance down the ray that a intersection exists.
+ * The point is the point of intersection.
+ */
+struct Intersect{
+	double distance;
+	Vector3 point;
+};
 
 class Object{
 
@@ -30,7 +40,7 @@ public:
 	Vector3 scale;
 
 	virtual bool containsPoint(const Vector3& point) const = 0;
-	virtual Vector3& getIntersection(const Ray& r, const Vector3& closest, Vector3& ret) const = 0;
+	virtual bool getIntersection(const Ray& r, Intersect& i) const = 0;
 
 };
 

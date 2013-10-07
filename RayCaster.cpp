@@ -14,14 +14,13 @@ Vector3 origin;
 /**
  * Sorting function to find the closest match.
  */
-bool closer(Match* a, Match* b){
-	return (origin.distanceToSquared(a->intersect) < origin.distanceToSquared(b->intersect));
+bool closer(Match a, Match b){
+	return (a.intersect.distance < b.intersect.distance);
 }
 
 
 RayCaster::RayCaster(const std::size_t x, const std::size_t y, const std::vector<Object*>* const objects, const Camera* const c,
 		const std::size_t width, const std::size_t height, unsigned recursion) : objects(objects), recursion(recursion), x(x), y(y) {
-	matches = std::vector<Match*>();
 
 	near = -(c->near);
 	far = -(c->far);
@@ -44,29 +43,23 @@ RayCaster& RayCaster::run(){
 
 	origin = r.origin;//Globalize(ish) the origin for sort function.
 
+	//Treating the ray as a vector to calculate distance to the near plane.
 	r.direction *= r.direction.z / near; //Project the ray out to the near plane. We will use this distance.
 	double distanceToNear = r.origin.distanceTo(r.direction);//Length of ray while it is cast out to the near plane.
 
 	r.direction.normalize();//Need this to be normalized to get proper results.
 
-	Vector3 point;
-
 	for (Object* object : *objects){
 
-		r.closestPointToPoint(object->position, &point);
+		Intersect i;
 
-		if (object->containsPoint(point)){
-			Match* m = new Match();
-			object->getIntersection(r, point, m->intersect);
+		if (object->getIntersection(r, i)){
 
-			if ( abs(m->intersect.z) < abs(near) || abs(m->intersect.z) > abs(far)){//Too close/far
-				delete m;
-				continue;
-			}
-
-			m->object = object;
-
+			Match m;
+			m.intersect = i;
+			m.object = object;
 			matches.push_back(m);
+
 		}
 
 	}
@@ -75,14 +68,11 @@ RayCaster& RayCaster::run(){
 	std::sort(matches.begin(), matches.end(), closer);
 
 	//Get closest match and copy it as the result.
-	Match* closest = matches[0];
-	result.color = closest->object->color;
-	result.distance = closest->intersect.distanceTo(r.origin) - distanceToNear;
+	Match closest = matches[0];
+	result.color = closest.object->color;
+	result.distance = closest.intersect.distance - distanceToNear;//Distance from image plane to point.
 
 	//Delete all matches and flush the matches vector.
-	for (Match* m : matches){
-		delete m;
-	}
 	matches.empty();
 
 	return *this;
