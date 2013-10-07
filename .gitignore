@@ -3,7 +3,7 @@ RayTracer
 .settings
 .cproject
 *.exe
-/test
+*.ppm
 
 # Compiled Object files
 *.slo

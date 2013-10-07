@@ -29,12 +29,13 @@ public:
 
 RayTracer* raytracer;//Global ratracer object.
 
-std::vector<std::string> split(std::string& input, char delimiter){
+std::vector<std::string> split(std::string& input){
 	std::vector<std::string> result;
-	std::istringstream iss(input);
+	std::stringstream ss;
+	ss << input;
 
 	std::string out;
-	while(std::getline(iss, out, delimiter)){
+	while(ss >> out){
 		result.push_back(out);
 	}
 
@@ -50,11 +51,12 @@ void parseObj(std::string& filename){
 
 		if (line.length() == 0) continue;//Empty line.
 
-		std::vector<std::string> parts = split(line, ' ');
+		std::vector<std::string> parts = split(line);
 
 		if (parts.size() != 9){
 
-			std::cerr << "This version does not support this line: \"" << line << "\"" << std::endl;
+			//Do Nothing.
+			std::cout << "Debug: Found line that was " << parts.size() << " units." << std::endl;
 
 		} else {
 
@@ -88,9 +90,12 @@ void parseObj(std::string& filename){
 
 				raytracer->scene.addObject(s);
 
+				std::cout << "Debug: A sphere was added to the scene." << std::endl;
+				std::cout << "Debug: The scene has " << raytracer->scene.getObjects().size() << " objects." << std::endl;
+
 			} else {
 
-				std::cerr << "This program does not support non sphere objects yet!" << std::endl;
+				std::cout << "Debug: Skipped a line that was 9 words. Error?" << std::endl;
 
 			}
 
@@ -109,7 +114,7 @@ void parseCmd(std::string& filename){
 
 		if (line.length() == 0) continue;//Empty line.
 
-		std::vector<std::string> parts = split(line, ' ');
+		std::vector<std::string> parts = split(line);
 
 		if (parts.size() == 10){
 
@@ -185,7 +190,7 @@ void parseCmd(std::string& filename){
 
 }
 
-bool matches(std::string& regex, std::string input){
+bool matches(const std::string& regex, const std::string& input){
 
 	return std::regex_match(input, std::regex(regex));
 
@@ -210,7 +215,8 @@ int main(int argc, char** argv){
 
 			std::string arg = std::string(argv[i]);
 
-			if (matches(arg, std::string("*.obj$"))){
+			std::string objTest = ".+\\.(obj)";
+			if (matches(objTest, arg)){
 
 				parseObj(arg);
 
