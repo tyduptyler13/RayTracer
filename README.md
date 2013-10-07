@@ -18,11 +18,14 @@ This program will accept an unlimited number of arguments.
 
 `RayTracer.exe [[file.obj] file2.obj]... -c commandfile`
 
-Notes: `-c` is required to input a commandfile and without a commandfile, the program will
-not output any images. Object files are optional but without them a camera will have nothing
+Notes: `-c <commandfile>`. Object files are optional but without them a camera will have nothing
 to render. Currently any file that is not formated correctly or that the program does not
 recognize will be ignored. (Within a obj or commandfile, individual lines can be ignored if
 the program can recover from the error.)
+
+Warning: A command file is executed when it is read. Including it before object files will result
+in those objects not being included in the render when that command file is executed. You can
+include multiple commandfiles, simply use multiple `-c <commandfile>` to your list of args. 
 
 
 Special Flags

@@ -67,16 +67,6 @@ std::vector<Vector3>& Matrix3::operator*(std::vector<Vector3>& vectors){
 
 }
 
-Matrix3& Matrix3::operator*(double s){
-
-	Matrix3* m = new Matrix3(*this);
-	*m *= s;
-	return *m;
-
-}
-
-
-
 Matrix3& Matrix3::operator*=(double s){
 
 	double* te = elements;

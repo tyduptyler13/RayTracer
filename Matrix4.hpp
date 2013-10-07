@@ -4,6 +4,7 @@
 #include "Vector3.hpp"
 
 #include <vector>
+#include <memory>
 
 class Matrix4{
 
@@ -11,30 +12,76 @@ class Matrix4{
 
 public:
 
-	Matrix4();
+	Matrix4(){
+		elements = new double[16];
+		identity();
+	}
+
 	Matrix4(double n11, double n12, double n13, double n14,
 			double n21, double n22, double n23, double n24,
 			double n31, double n32, double n33, double n34,
 			double n41, double n42, double n43, double n44);
-	Matrix4(Matrix4&);
-	~Matrix4();
+
+	Matrix4(Matrix4& m){
+		elements = new double[16];
+
+		for (int i = 0; i < 16; ++i){
+			elements[i] = m.elements[i];
+		}
+	}
+
+	~Matrix4(){
+		delete[] elements;
+	}
 
 	Matrix4& set(double n11, double n12, double n13, double n14,
 			double n21, double n22, double n23, double n24,
 			double n31, double n32, double n33, double n34,
 			double n41, double n42, double n43, double n44);
 
-	Matrix4& identity();
+	Matrix4& identity(){
+		set(
+				1, 0, 0, 0,
+				0, 1, 0, 0,
+				0, 0, 1, 0,
+				0, 0, 0, 1
+		);
+
+		return *this;
+	}
 
 	Matrix4& operator=(Matrix4& m);
-	Matrix4* operator*(Matrix4& m);
+
+	std::unique_ptr<Matrix4> operator*(Matrix4& m);
+
 	Matrix4& operator*=(Matrix4& m);
+
 	Matrix4& operator*=(double s);
-	std::vector<Vector3>& operator*(std::vector<Vector3>&);
+
+	std::vector<Vector3>& operator*(std::vector<Vector3>& vectors){
+		for (Vector3 v : vectors){
+			v.applyMatrix4(*this);
+		}
+
+		return vectors;
+	}
+
 	double det();
+
 	Matrix4& transpose();
-	Matrix4& setPosition(Vector3& v);
+
+	Matrix4& setPosition(Vector3& v){
+		double* te = elements;
+
+		te[12] = v.x;
+		te[13] = v.y;
+		te[14] = v.z;
+
+		return *this;
+	}
+
 	Matrix4& scale(Vector3& v);
+
 	Matrix4& makeTranslation(double x, double y, double z){
 		this->set(
 				1, 0, 0, x,
@@ -44,8 +91,6 @@ public:
 		);
 		return *this;
 	}
-
-	//TODO Rotations. Not needed yet.
 
 	Matrix4& makeScale(double x, double y, double z){
 		this->set(

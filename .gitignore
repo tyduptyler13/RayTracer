@@ -3,6 +3,7 @@ RayTracer
 .settings
 .cproject
 *.exe
+/test
 
 # Compiled Object files
 *.slo
@@ -17,3 +18,4 @@ RayTracer
 *.lai
 *.la
 *.a
+

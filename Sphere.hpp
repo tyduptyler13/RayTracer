@@ -3,15 +3,12 @@
 
 #include<string>
 
-#include "Vector3.hpp"
-#include "ImageTools.hpp"
 #include "Object.hpp"
 
 class Sphere : public Object{
 
 public:
 	double radius;
-	Color color;
 
 	Sphere();
 	Sphere(Vector3& center, double radius);
@@ -25,6 +22,11 @@ public:
 	}
 
 	Sphere& setColor(float r, float g, float b);
+
+	Sphere& setName(std::string s){
+		name = s;
+		return *this;
+	}
 
 	Sphere& operator=(const Sphere& s){
 		position = s.position;
@@ -40,6 +42,12 @@ public:
 	}
 
 	Sphere& translate(const Vector3&);
+
+	bool containsPoint(const Vector3& point) const{
+		return (point.distanceTo(position) <= radius);
+	}
+
+	Vector3& getIntersection(const Ray& r, const Vector3& point, Vector3& in) const;
 
 };
 

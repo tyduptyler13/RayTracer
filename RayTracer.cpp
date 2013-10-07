@@ -10,6 +10,7 @@
 #include "Scene.hpp"
 #include "Sphere.hpp"
 #include "Vector3.hpp"
+#include "Camera.hpp"
 
 class RayTracer{
 
@@ -23,7 +24,6 @@ public:
 	RayTracer(){
 		scene = Scene();
 	}
-
 
 };
 
@@ -86,6 +86,8 @@ void parseObj(std::string& filename){
 
 				s->setColor(red, green, blue);
 
+				raytracer->scene.addObject(s);
+
 			} else {
 
 				std::cerr << "This program does not support non sphere objects yet!" << std::endl;
@@ -113,11 +115,40 @@ void parseCmd(std::string& filename){
 
 			if (parts[0] == "c"){
 
-				//TODO Add cameras.
+				double x, y, z, near, far;
+				std::stringstream ss;
+
+				ss << parts[2];
+				ss >> x;
+				ss << parts[3];
+				ss >> y;
+				ss << parts[4];
+				ss >> z;
+
+				Vector3 prp(x, y, z);
+
+				ss << parts[5];
+				ss >> x;
+				ss << parts[6];
+				ss >> y;
+				ss << parts[7];
+				ss >> z;
+
+				Vector3 pnp(x, y, z);
+
+				ss << parts[8];
+				ss >> near;
+				ss << parts[9];
+				ss >> far;
+
+				Camera* c = new Camera(prp, pnp, near, far);
+				c->setName(parts[1]);
+
+				raytracer->scene.addCamera(c);
 
 			} else {
 
-				std::cout << "A line was not regonized! (" << filename << ") "
+				std::cout << "A line was not recognized! (" << filename << ") "
 						<< line << std::endl;
 
 			}
@@ -126,11 +157,24 @@ void parseCmd(std::string& filename){
 
 			if (parts[0] == "r"){
 
-				//TODO tell cameras to render.
+				std::stringstream ss;
+
+				std::string name = parts[1];
+				std::size_t width, height;
+				unsigned recursion;
+
+				ss << parts[2];
+				ss >> width;
+				ss << parts[3];
+				ss >> height;
+				ss << parts[4];
+				ss >> recursion;
+
+				raytracer->scene.render(name, width, height, recursion);
 
 			} else {
 
-				std::cout << "A line was not regonized! (" << filename << ") "
+				std::cout << "A line was not recognized! (" << filename << ") "
 						<< line << std::endl;
 
 			}

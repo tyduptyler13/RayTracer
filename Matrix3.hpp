@@ -28,12 +28,10 @@ public:
 	Matrix3& identity();
 	Matrix3& operator=(const Matrix3&);
 	std::vector<Vector3>& operator*(std::vector<Vector3>&);
-	Matrix3& operator*(double);
 	Matrix3& operator*=(double);
 	double det();
 	Matrix3& transpose();
 	const double* toArray() const;
-
 
 };
 

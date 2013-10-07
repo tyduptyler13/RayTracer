@@ -34,3 +34,12 @@ Sphere& Sphere::translate(const Vector3& v){
 bool Sphere::operator==(const Sphere& s) const{
 	return (position == s.position) && (radius == radius);
 }
+
+
+
+Vector3& Sphere::getIntersection(const Ray& r, const Vector3& point, Vector3& in) const{
+
+
+
+	return in;
+}

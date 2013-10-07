@@ -1,11 +1,6 @@
 
 #include "Matrix4.hpp"
 
-Matrix4::Matrix4(){
-	elements = new double[16];
-	identity();
-}
-
 Matrix4::Matrix4(double n11, double n12, double n13, double n14,
 		double n21, double n22, double n23, double n24,
 		double n31, double n32, double n33, double n34,
@@ -20,20 +15,6 @@ Matrix4::Matrix4(double n11, double n12, double n13, double n14,
 
 }
 
-Matrix4::Matrix4(Matrix4& m){
-
-	elements = new double[16];
-
-	for (int i = 0; i < 16; ++i){
-		elements[i] = m.elements[i];
-	}
-
-}
-
-Matrix4::~Matrix4(){
-	delete[] elements;
-}
-
 Matrix4& Matrix4::set(double n11, double n12, double n13, double n14,
 		double n21, double n22, double n23, double n24,
 		double n31, double n32, double n33, double n34,
@@ -45,17 +26,6 @@ Matrix4& Matrix4::set(double n11, double n12, double n13, double n14,
 	te[1] = n21; te[5] = n22; te[9] = n23; te[13] = n24;
 	te[2] = n31; te[6] = n32; te[10] = n33; te[14] = n34;
 	te[3] = n41; te[7] = n42; te[11] = n43; te[15] = n44;
-
-	return *this;
-}
-
-Matrix4& Matrix4::identity(){
-	set(
-			1, 0, 0, 0,
-			0, 1, 0, 0,
-			0, 0, 1, 0,
-			0, 0, 0, 1
-	);
 
 	return *this;
 }
@@ -77,10 +47,10 @@ Matrix4& Matrix4::operator=(Matrix4& m){
 }
 
 
-Matrix4* Matrix4::operator*(Matrix4& m){
+std::unique_ptr<Matrix4> Matrix4::operator*(Matrix4& m){
 	Matrix4* ret = new Matrix4(*this);
 	*ret *= m;
-	return ret;
+	return std::unique_ptr<Matrix4>(ret);
 }
 
 Matrix4& Matrix4::operator *=(Matrix4& m){
@@ -119,16 +89,6 @@ Matrix4& Matrix4::operator *=(Matrix4& m){
 	te[15] = a41 * b14 + a42 * b24 + a43 * b34 + a44 * b44;
 
 	return *this;
-}
-
-std::vector<Vector3>& Matrix4::operator*(std::vector<Vector3>& vectors){
-
-	for (Vector3 v : vectors){
-		v.applyMatrix4(*this);
-	}
-
-	return vectors;
-
 }
 
 double Matrix4::det(){
@@ -188,16 +148,6 @@ Matrix4& Matrix4::transpose(){
 	tmp = te[3]; te[3] = te[12]; te[12] = tmp;
 	tmp = te[7]; te[7] = te[13]; te[13] = tmp;
 	tmp = te[11]; te[11] = te[14]; te[14] = tmp;
-
-	return *this;
-}
-
-Matrix4& Matrix4::setPosition(Vector3& v){
-	double* te = elements;
-
-	te[12] = v.x;
-	te[13] = v.y;
-	te[14] = v.z;
 
 	return *this;
 }

@@ -5,6 +5,7 @@
 #define VECTOR3_HPP_
 
 #include <math.h>
+#include <memory>
 
 //#include "Matrix3.hpp" Cyclic
 class Matrix3;
@@ -25,19 +26,19 @@ public:
 
 	Vector3& operator=(const Vector3&);
 
-	Vector3* operator+(double) const;
+	std::unique_ptr<Vector3> operator+(double) const;
 	Vector3& operator+=(double);
-	Vector3* operator+(const Vector3&) const;
+	std::unique_ptr<Vector3> operator+(const Vector3&) const;
 	Vector3& operator+=(const Vector3&);
 
-	Vector3* operator-(double) const;
+	std::unique_ptr<Vector3> operator-(double) const;
 	Vector3& operator-=(double);
-	Vector3* operator-(const Vector3&) const;
+	std::unique_ptr<Vector3> operator-(const Vector3&) const;
 	Vector3& operator-=(const Vector3&);
 
-	Vector3* operator*(double) const;
+	std::unique_ptr<Vector3> operator*(double) const;
 	Vector3& operator*=(double);
-	Vector3* operator*(const Vector3&) const;
+	std::unique_ptr<Vector3> operator*(const Vector3&) const;
 	Vector3& operator*=(const Vector3&);
 
 	Vector3& applyMatrix3(const Matrix3&);
@@ -62,7 +63,7 @@ public:
 
 	Vector3& normalize();
 
-	Vector3* cross(const Vector3&) const;
+	std::unique_ptr<Vector3> cross(const Vector3&) const;
 	Vector3& crossVectors(const Vector3&, const Vector3&);
 
 	double distanceToSquared(const Vector3&) const;

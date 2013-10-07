@@ -12,7 +12,7 @@ Ray::Ray(){
 	direction = Vector3();
 }
 
-Ray::Ray(Vector3& origin, Vector3& direction){
+Ray::Ray(const Vector3& origin, const Vector3& direction){
 	this->origin = origin;
 	this->direction = direction;
 }
@@ -36,35 +36,37 @@ Ray& Ray::operator=(const Ray& r){
 	return *this;
 }
 
-Vector3* Ray::at(double t){
+std::unique_ptr<Vector3> Ray::at(double t){
 	Vector3* v = new Vector3();
 	return at(t, v);
 }
 
-Vector3* Ray::at(double t, Vector3* target){
+std::unique_ptr<Vector3> Ray::at(double t, Vector3* target){
 	((*target = direction) *= t) += origin;
-	return target;
+	return std::unique_ptr<Vector3>(target);
 }
 
 Ray& Ray::recast(double t){
 	//Need extra vector for values.
-	Vector3* tmp = at(t);
+	std::unique_ptr<Vector3> tmp = at(t);
 	origin = *tmp;
-	delete tmp;
 
 	return *this;
 }
 
-Vector3* Ray::closestPointToPoint(const Vector3& point, Vector3* target = new Vector3()) const{
+std::unique_ptr<Vector3> Ray::closestPointToPoint(const Vector3& point, Vector3* target = new Vector3()) const{
 	*target = point;
 	*target -= origin;
 	double directionDistance = target->dot(direction);
 
 	if (directionDistance < 0){
-		return &(*target = origin);
+		*target = origin;
+		return std::unique_ptr<Vector3>(target);
 	}
 
-	return &(((*target = direction) *= directionDistance) += origin);
+	((*target = direction) *= directionDistance) += origin;
+
+	return std::unique_ptr<Vector3>(target);
 }
 
 double Ray::distanceToPoint(const Vector3& point) const{
@@ -85,10 +87,6 @@ double Ray::distanceToPoint(const Vector3& point) const{
 	delete v1;
 
 	return distanceTo;
-}
-
-bool Ray::isIntersectionSphere(const Sphere& sphere) const{
-	return (distanceToPoint(sphere.position) <= sphere.radius);
 }
 
 bool Ray::operator ==(const Ray& r) const{

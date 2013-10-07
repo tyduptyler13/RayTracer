@@ -31,16 +31,16 @@ Vector3& Vector3::operator=(const Vector3& v){
 	return *this;
 }
 
-Vector3* Vector3::operator+(const Vector3& v) const{
+std::unique_ptr<Vector3> Vector3::operator+(const Vector3& v) const{
 	Vector3* ret = new Vector3(*this);
 	*ret += v;
-	return ret;
+	return std::unique_ptr<Vector3>(ret);
 }
 
-Vector3* Vector3::operator+(double s) const{
+std::unique_ptr<Vector3> Vector3::operator+(double s) const{
 	Vector3* ret = new Vector3(*this);
 	*ret += s;
-	return ret;
+	return std::unique_ptr<Vector3>(ret);
 }
 
 Vector3& Vector3::operator+=(const Vector3& v){
@@ -59,10 +59,10 @@ Vector3& Vector3::operator+=(double s){
 	return *this;
 }
 
-Vector3* Vector3::operator-(const Vector3& v) const{
+std::unique_ptr<Vector3> Vector3::operator-(const Vector3& v) const{
 	Vector3* tmp = new Vector3(*this);
 	*tmp -= v;
-	return tmp;
+	return std::unique_ptr<Vector3>(tmp);
 }
 
 Vector3& Vector3::operator-=(const Vector3& v){
@@ -73,10 +73,10 @@ Vector3& Vector3::operator-=(const Vector3& v){
 	return *this;
 }
 
-Vector3* Vector3::operator-(double s) const{
+std::unique_ptr<Vector3> Vector3::operator-(double s) const{
 	Vector3* tmp = new Vector3(*this);
 	*tmp -= s;
-	return tmp;
+	return std::unique_ptr<Vector3>(tmp);
 }
 
 Vector3& Vector3::operator-=(double s){
@@ -87,10 +87,10 @@ Vector3& Vector3::operator-=(double s){
 	return *this;
 }
 
-Vector3* Vector3::operator*(const Vector3& v) const{
+std::unique_ptr<Vector3> Vector3::operator*(const Vector3& v) const{
 	Vector3* tmp = new Vector3(*this);
 	*tmp *= v;
-	return tmp;
+	return std::unique_ptr<Vector3>(tmp);
 }
 
 Vector3& Vector3::operator*=(const Vector3& v){
@@ -101,10 +101,10 @@ Vector3& Vector3::operator*=(const Vector3& v){
 	return *this;
 }
 
-Vector3* Vector3::operator*(double s) const{
+std::unique_ptr<Vector3> Vector3::operator*(double s) const{
 	Vector3* tmp = new Vector3(*this);
 	*tmp *= s;
-	return tmp;
+	return std::unique_ptr<Vector3>(tmp);
 }
 
 Vector3& Vector3::operator*=(double s){
@@ -179,14 +179,14 @@ Vector3& Vector3::normalize(){
 	return *this/=this->length();
 }
 
-Vector3* Vector3::cross(const Vector3& v) const{
+std::unique_ptr<Vector3> Vector3::cross(const Vector3& v) const{
 	Vector3* ret = new Vector3();
 
 	ret->x = y * v.z - z * v.y;
 	ret->y = z * v.x - x * v.z;
 	ret->z = x * v.y - y * v.x;
 
-	return ret;
+	return std::unique_ptr<Vector3>(ret);
 }
 
 Vector3& Vector3::crossVectors(const Vector3& a, const Vector3& b){
