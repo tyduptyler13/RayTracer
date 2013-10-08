@@ -39,22 +39,23 @@ bool Sphere::operator==(const Sphere& s) const{
 
 bool Sphere::getIntersection(const Ray& r, Intersect& i) const{
 
-	//Shortest distance from ray to sphere.
-	double sdistance = position.dot(r.direction);
+	//Clostest point on the ray to the sphere.
+	//pdistance = plane of intersection with the center of the sphere.
+	double pdistance = position.dot(r.direction);
+	std::unique_ptr<Vector3> p = r.at(pdistance);
 
-	if (sdistance > radius || sdistance < 0){//Missed the sphere. (If distance is negative, it is behind the ray plane.)
+	double shortestDistance = p->distanceTo(position);
+
+	if (shortestDistance > radius || pdistance < 0){//Missed the sphere. (If distance is negative, it is behind the ray plane.)
 		return false;
 	}
 
-	//Shortest distance squared.
-	double sdistance2 = pow(sdistance, 2);
-	//Distance from origin to intersection plane of the origin of the sphere.
-	double distance = sqrt(r.origin.distanceToSquared(position) - sdistance2);
+
 
 	//Distance from the point on the ray to both intersections. (could be 0 if hitting edge)
-	double innerDistance = sqrt(pow(radius, 2) - sdistance2);
+	double innerDistance = sqrt(pow(radius, 2) - pow(shortestDistance, 2));
 
-	i.distance = distance - innerDistance;
+	i.distance = pdistance - innerDistance;//Intersection "should" always be closer. The RayCaster will fix this otherwise.
 	i.point = *(r.at(i.distance));
 
 	return true;

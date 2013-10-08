@@ -26,8 +26,7 @@ void Camera::render(MonoImage* distance, ColorImage* color, const std::vector<Ob
 				distance->set(x, y, value);
 
 				//Set color value;
-				Color c = color->get(x, y);
-				c = r.color;
+				color->set(x, y, r.color);
 
 			} catch (int e) {
 				if (e == NotFinishedError){

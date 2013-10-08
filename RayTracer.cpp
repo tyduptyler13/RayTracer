@@ -22,19 +22,6 @@ public:
 
 };
 
-std::vector<std::string> split(std::string& input){
-	std::vector<std::string> result;
-	std::stringstream ss;
-	ss << input;
-
-	std::string out;
-	while(ss >> out){
-		result.push_back(out);
-	}
-
-	return result;
-}
-
 void parseObj(std::string& filename, RayTracer* raytracer){
 	std::ifstream file(filename);
 
@@ -44,50 +31,37 @@ void parseObj(std::string& filename, RayTracer* raytracer){
 
 		if (line.length() == 0) continue;//Empty line.
 
-		std::vector<std::string> parts = split(line);
+		std::stringstream ss;
+		std::string part1;
 
-		if (parts.size() != 9){
+		ss << line;
 
-			//Do Nothing.
-			//std::cout << "Debug: Found line that was " << parts.size() << " units." << std::endl;
+		ss >> part1;
 
-		} else {
+		if (part1 == "s"){
+			double x, y, z, r;
+			std::string name;
 
-			if (parts[0] == "s"){
-				double x, y, z, r;
-				std::stringstream ss;
+			ss >> name;
 
-				ss << parts[2];
-				ss >> x;
-				ss << parts[3];
-				ss >> y;
-				ss << parts[4];
-				ss >> z;
-				ss << parts[5];
-				ss >> r;
+			ss >> x;
+			ss >> y;
+			ss >> z;
+			ss >> r;
 
-				float red, green, blue;
+			float red, green, blue;
 
-				ss << parts[6];
-				ss >> red;
-				ss << parts[7];
-				ss >> blue;
-				ss << parts[8];
-				ss >> green;
+			ss >> red;
+			ss >> blue;
+			ss >> green;
 
-				Vector3 v = Vector3(x, y, z);
-				Sphere* s = new Sphere(v, r);
-				s->name = parts[1];
+			Vector3 v = Vector3(x, y, z);
+			Sphere* s = new Sphere(v, r);
+			s->name = name;
 
-				s->setColor(red, green, blue);
+			s->setColor(red/255, green/255, blue/255);
 
-				raytracer->scene.addObject(s);
-
-			} else {
-
-				std::cout << "Debug: Skipped a line that was 9 words. Error?" << std::endl;
-
-			}
+			raytracer->scene.addObject(s);
 
 		}
 
@@ -113,6 +87,8 @@ void parseCmd(std::string& filename, RayTracer* raytracer){
 		ss << line;
 
 		ss >> part1;
+
+		std::cout << "Debug: command = " << part1 << std::endl;
 
 		if (part1 == "c"){
 

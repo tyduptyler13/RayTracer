@@ -22,6 +22,8 @@ bool closer(Match a, Match b){
 RayCaster::RayCaster(const std::size_t x, const std::size_t y, const std::vector<Object*>* const objects, const Camera* const c,
 		const std::size_t width, const std::size_t height, unsigned recursion) : objects(objects), recursion(recursion), x(x), y(y) {
 
+	isFinished = false;
+
 	near = -(c->near);
 	far = -(c->far);
 
@@ -34,7 +36,7 @@ RayCaster::RayCaster(const std::size_t x, const std::size_t y, const std::vector
 	tmpx = (-halfw + x) / halfw;//Range from -1 to 1 from the image width. (Corrected for 0 starting on the left.)
 	tmpy = (halfh - y) / halfh;//Range from -1 to 1 from the image height. (Corrected for 0 starting at the top.)
 
-	Vector3 other = Vector3(tmpx, tmpy, c->direction.z);//Point the vector at the image plane where the image pixels should be.
+	Vector3 other = Vector3(tmpx, tmpy, -(c->direction.z));//Point the vector at the image plane where the image pixels should be.
 
 	r = Ray(c->position, other);
 }
@@ -53,6 +55,8 @@ RayCaster& RayCaster::run(){
 
 		Intersect i = Intersect();
 
+		//std::cout << "Finding the center of the object(" << object->name << ")" << std::endl;
+
 		if (object->getIntersection(r, i)){
 
 			Match m;
@@ -67,7 +71,7 @@ RayCaster& RayCaster::run(){
 	//Sort results.
 	std::sort(matches.begin(), matches.end(), closer);
 
-	if (matches.size() > 1){
+	if (matches.size() >= 1){
 		//Get closest match and copy it as the result.
 		Match closest = matches[0];
 		result.color = closest.object->color;
@@ -78,6 +82,8 @@ RayCaster& RayCaster::run(){
 	} else {
 		result.color = Color();
 	}
+
+	isFinished = true;
 
 	return *this;
 }

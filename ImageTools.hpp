@@ -18,10 +18,9 @@
  * By default this will always go to black.
  */
 struct Color{
-	float   r = 0,
-			g = 0,
-			b = 0;
-
+	float r = 0;
+	float g = 0;
+	float b = 0;
 };
 
 template<class T>
@@ -76,6 +75,10 @@ public:
 
 	ColorImage(std::size_t width, std::size_t height) : Image<Color>(width, height){}
 
+	void set(std::size_t x, std::size_t y, Color& c){
+		data[x][y] = c;
+	}
+
 	void save(const std::string& filename){
 
 		std::ofstream file(filename);
@@ -118,15 +121,6 @@ class MonoImage : Image<float>{
 public:
 
 	MonoImage(std::size_t width, std::size_t height) : Image<float>(width, height){}
-
-	//	~MonoImage(){
-	//
-	//		for (std::size_t i = 0; i < width; ++i){
-	//			delete[] data[i];
-	//		}
-	//
-	//		delete[] data;
-	//	}
 
 	/**
 	 * Had to change the get signature because the inherited one returns a reference.
