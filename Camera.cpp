@@ -29,12 +29,14 @@ void Camera::render(MonoImage* distance, ColorImage* color, const std::vector<Ob
 				Color c = color->get(x, y);
 				c = r.color;
 
-			} catch (int e){
+			} catch (int e) {
 				if (e == NotFinishedError){
 					std::cerr << "The Raycaster was not finished fetching the results. The program likely has an error or race condition." << std::endl;
 				} else {
 					throw e;
 				}
+			} catch (...) {
+				std::cout << "A problem has occurred in the render loop! Check your Camera.render function." << std::endl;
 			}
 
 		}

@@ -39,46 +39,24 @@ bool Sphere::operator==(const Sphere& s) const{
 
 bool Sphere::getIntersection(const Ray& r, Intersect& i) const{
 
-	double distance = position.dot(r.direction);
+	//Shortest distance from ray to sphere.
+	double sdistance = position.dot(r.direction);
 
-	double a = r.direction.dot(r.direction);
-	double b = 2 * r.direction.dot(r.origin);
-	double c = r.origin.dot(r.origin) - pow(radius, 2);
-
-	double disc = (pow(b,2) - 4 * a * c);
-
-	if (disc < 0){
-		return false; //Miss
-	} else {
-		disc = sqrt(disc);
-		double q;
-
-		if (b<0){
-			q = (-b - disc)/2;
-		} else {
-			q = (-b + disc)/2;
-		}
-
-		double t0 = q/a, t1 = c/q;
-
-		if (t0 > t1){
-			std::swap(t0, t1);
-		}
-
-		if (t1 < 0){
-			return false; //Miss (Its on the wrong side)
-		}
-
-		if (t0 < 0){
-			i.distance = t1;
-			i.point = *(r.at(distance - t1));
-			return true;
-		} else {
-			i.distance = t0;
-			i.point = *(r.at(distance - t0));
-			return true;
-		}
-
+	if (sdistance > radius || sdistance < 0){//Missed the sphere. (If distance is negative, it is behind the ray plane.)
+		return false;
 	}
+
+	//Shortest distance squared.
+	double sdistance2 = pow(sdistance, 2);
+	//Distance from origin to intersection plane of the origin of the sphere.
+	double distance = sqrt(r.origin.distanceToSquared(position) - sdistance2);
+
+	//Distance from the point on the ray to both intersections. (could be 0 if hitting edge)
+	double innerDistance = sqrt(pow(radius, 2) - sdistance2);
+
+	i.distance = distance - innerDistance;
+	i.point = *(r.at(i.distance));
+
+	return true;
 
 }

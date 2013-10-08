@@ -44,14 +44,14 @@ RayCaster& RayCaster::run(){
 	origin = r.origin;//Globalize(ish) the origin for sort function.
 
 	//Treating the ray as a vector to calculate distance to the near plane.
-	r.direction *= r.direction.z / near; //Project the ray out to the near plane. We will use this distance.
+	r.direction *= near / r.direction.z; //Project the ray out to the near plane. We will use this distance.
 	double distanceToNear = r.origin.distanceTo(r.direction);//Length of ray while it is cast out to the near plane.
 
 	r.direction.normalize();//Need this to be normalized to get proper results.
 
 	for (Object* object : *objects){
 
-		Intersect i;
+		Intersect i = Intersect();
 
 		if (object->getIntersection(r, i)){
 
@@ -67,13 +67,17 @@ RayCaster& RayCaster::run(){
 	//Sort results.
 	std::sort(matches.begin(), matches.end(), closer);
 
-	//Get closest match and copy it as the result.
-	Match closest = matches[0];
-	result.color = closest.object->color;
-	result.distance = closest.intersect.distance - distanceToNear;//Distance from image plane to point.
+	if (matches.size() > 1){
+		//Get closest match and copy it as the result.
+		Match closest = matches[0];
+		result.color = closest.object->color;
+		result.distance = closest.intersect.distance - distanceToNear;//Distance from image plane to point.
 
-	//Delete all matches and flush the matches vector.
-	matches.empty();
+		//Delete all matches and flush the matches vector.
+		matches.empty();
+	} else {
+		result.color = Color();
+	}
 
 	return *this;
 }

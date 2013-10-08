@@ -32,3 +32,11 @@ Special Flags
 ----
 
 `-h` || `--help` will request you view this document. (These are ignored if other arguments are present)
+
+Building
+----
+Use `make` to create all required binaries.
+
+This build is parallel safe and you can just `make -j#` to allow it to build faster. Where # is the number of threads.
+
+Note: Once this program is finished, the output will be compiled with -O4 optimizations to improve speed and reduce size. This usually results in a binary that is 1/10th the original size and runs much faster. Until then it uses -Og and -g flags to allow for debugging with some optimization.

@@ -14,31 +14,69 @@
 
 #define MAX 256
 
+/**
+ * By default this will always go to black.
+ */
 struct Color{
-	float r, g, b;
+	float   r = 0,
+			g = 0,
+			b = 0;
+
 };
 
-class ColorImage{
+template<class T>
+class Image{
 
-	Color* data;
+protected:
+	T** data;
 	std::size_t width;
 	std::size_t height;
 
 public:
 
-	ColorImage(std::size_t width, std::size_t height) : width(width), height(height){
-		data = new Color[width * height];//Smashed into single dimension.
+	Image(std::size_t width, std::size_t height) : width(width), height(height){
+		data = new T*[width];
+		for (std::size_t i = 0; i < width; ++i){
+			data[i] = new T[height]();
+		}
 	}
 
-	~ColorImage(){
+	virtual ~Image(){
+		for (std::size_t i = 0; i < width; ++i){
+			delete[] data[i];
+		}
+
 		delete[] data;
 	}
 
-	Color& get(std::size_t x, std::size_t y){
-		return data[x * y - 1];
+	T& get(std::size_t x, std::size_t y){
+		return data[x][y];
 	}
 
-	void save(std::string filename){
+	virtual void save(const std::string&) = 0;
+
+	/**
+	 * Assuming the input is between 0 and 1.
+	 */
+	inline int map(float in){
+		return (int)(MAX * in);
+	}
+
+};
+
+class ColorImage : public Image<Color>{
+
+	void printColor(Color& c, std::ofstream& out){
+
+		out << map(c.r) << " " << map(c.g) << " " << map(c.b) << " ";
+
+	}
+
+public:
+
+	ColorImage(std::size_t width, std::size_t height) : Image<Color>(width, height){}
+
+	void save(const std::string& filename){
 
 		std::ofstream file(filename);
 
@@ -67,43 +105,42 @@ public:
 
 	}
 
-	void printColor(Color& c, std::ofstream& out){
-
-		out << c.r << " " << c.g << " " << c.b << " ";
-
-	}
-
-	inline int map(float in){
-		return MAX * in;
-	}
-
 };
 
-class MonoImage{
+class MonoImage : Image<float>{
 
-	float* data;
-	std::size_t width;
-	std::size_t height;
+	void printColor(float f, std::ofstream& out){
+
+		out << map(f) << " ";
+
+	}
 
 public:
 
-	MonoImage(std::size_t width, std::size_t height) : width(width), height(height){
-		data = new float[width * height];//Smashed into single dimension.
-	}
+	MonoImage(std::size_t width, std::size_t height) : Image<float>(width, height){}
 
-	~MonoImage(){
-		delete[] data;
-	}
+	//	~MonoImage(){
+	//
+	//		for (std::size_t i = 0; i < width; ++i){
+	//			delete[] data[i];
+	//		}
+	//
+	//		delete[] data;
+	//	}
 
+	/**
+	 * Had to change the get signature because the inherited one returns a reference.
+	 * To change values of this image, use set.
+	 */
 	float get(std::size_t x, std::size_t y){
-		return data[x * y - 1];
+		return data[x][y];
 	}
 
 	void set(std::size_t x, std::size_t y, float value){
-		data[x * y - 1] = value;
+		data[x][y] = value;
 	}
 
-	void save(std::string filename){
+	void save(const std::string& filename){
 
 		std::ofstream file(filename);
 
@@ -130,16 +167,6 @@ public:
 			std::cout << "Could not open file! (" << filename << ")" << std::endl;
 		}
 
-	}
-
-	void printColor(float f, std::ofstream& out){
-
-		out << map(f) << " ";
-
-	}
-
-	inline int map(float in){
-		return MAX * in;
 	}
 
 };

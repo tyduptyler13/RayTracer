@@ -21,8 +21,8 @@
  * The point is the point of intersection.
  */
 struct Intersect{
-	double distance;
-	Vector3 point;
+	double distance = 0;
+	Vector3 point = Vector3();
 };
 
 class Object{
