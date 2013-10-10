@@ -52,8 +52,8 @@ void parseObj(std::string& filename, RayTracer* raytracer){
 			float red, green, blue;
 
 			ss >> red;
-			ss >> blue;
 			ss >> green;
+			ss >> blue;
 
 			Vector3 v = Vector3(x, y, z);
 			Sphere* s = new Sphere(v, r);
@@ -78,7 +78,7 @@ void parseCmd(std::string& filename, RayTracer* raytracer){
 
 	while(std::getline(file, line)){
 
-		std::cout << "Debug: Line: " << line << std::endl;
+		//std::cout << "Debug: Line: " << line << std::endl;
 
 		if (line.length() == 0) continue;//Empty line.
 
@@ -88,7 +88,7 @@ void parseCmd(std::string& filename, RayTracer* raytracer){
 
 		ss >> part1;
 
-		std::cout << "Debug: command = " << part1 << std::endl;
+		//std::cout << "Debug: command = " << part1 << std::endl;
 
 		if (part1 == "c"){
 

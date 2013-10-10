@@ -1,9 +1,9 @@
 
-TARGET=RayTracer
+TARGET=HW1
 
 CC=g++
 
-FLAGS=-Wall -ansi -Wextra -pedantic -g -std=c++11
+FLAGS=-Wall -ansi -Wextra -pedantic -O4 -std=c++11
 
 all: build
 

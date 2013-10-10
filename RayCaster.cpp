@@ -36,7 +36,7 @@ RayCaster::RayCaster(const std::size_t x, const std::size_t y, const std::vector
 	tmpx = (-halfw + x) / halfw;//Range from -1 to 1 from the image width. (Corrected for 0 starting on the left.)
 	tmpy = (halfh - y) / halfh;//Range from -1 to 1 from the image height. (Corrected for 0 starting at the top.)
 
-	Vector3 other = Vector3(tmpx, tmpy, -(c->direction.z));//Point the vector at the image plane where the image pixels should be.
+	Vector3 other = Vector3(tmpx, tmpy, near);//Point the vector at the image plane where the image pixels should be.
 
 	r = Ray(c->position, other);
 }
@@ -79,7 +79,7 @@ RayCaster& RayCaster::run(){
 
 		//Delete all matches and flush the matches vector.
 		matches.empty();
-	} else {
+	} else {//No hit.
 		result.color = Color();
 	}
 

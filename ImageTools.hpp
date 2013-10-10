@@ -17,10 +17,10 @@
 /**
  * By default this will always go to black.
  */
-struct Color{
-	float r = 0;
-	float g = 0;
-	float b = 0;
+struct Color{//White default.
+	float r = 1;
+	float g = 1;
+	float b = 1;
 };
 
 template<class T>
