@@ -10,40 +10,53 @@
 
 #include <cmath>
 
-void Camera::render(MonoImage* distance, ColorImage* color, const std::vector<Object*>* const objects,
-		std::size_t width, std::size_t height, unsigned recursion){
+Ray Camera::getProjector(size_t x, size_t y, size_t width, size_t height) const{
+
+	double near = -(this->near);
+	double far = -(this->far);
+
+	//Hacky temporary solution to unprojecting screen coordinates to world coordinates.
+	//This only works if the camera is looking down the z axis.
+
+	double tmpx, tmpy;
+	double halfw = width / 2;
+	double halfh = height / 2;
+	tmpx = (-halfw + x) / halfw;//Range from -1 to 1 from the image width. (Corrected for 0 starting on the left.)
+	tmpy = (halfh - y) / halfh;//Range from -1 to 1 from the image height. (Corrected for 0 starting at the top.)
+
+	Vector3 other = Vector3(tmpx, tmpy, near);//Point the vector at the image plane where the image pixels should be.
+
+	other.normalize();
+
+	Ray ray = Ray(position, other);
+
+	return ray;
+
+}
+
+void Camera::render(MonoImage* distance, ColorImage* color, const std::vector<Object*>& objects,
+		std::size_t width, std::size_t height, unsigned recursion) const{
 
 #pragma omp parallel for
 	for (std::size_t x = 0; x < width; ++x){
 
 		for (std::size_t y = 0; y < height; ++y){
 
-			try{
+			Ray ray = getProjector(x, y, width, height);
 
-				Result r = RayCaster(x, y, objects, this, width, height, recursion).run().getResult();
+			RayCaster rc;
 
-				//Set distance value; Distance over total possible distance.
-				float value = r.distance / std::abs(far - near);
-
-				value = (value != 0)? 1-value : value;//Simple change to allow for black background and to match the example output.
-
-				if (value < 0 || value > 1)
-					value = 0;//Too close/too far.
-
-				distance->set(x, y, value);
-
-				//Set color value;
-				color->set(x, y, r.color);
-
-			} catch (int e) {
-				if (e == NotFinishedError){
-					std::cerr << "The Raycaster was not finished fetching the results. The program likely has an error or race condition." << std::endl;
-				} else {
-					throw e;
+			Intersect closest;
+			for (Intersect i : rc.cast(objects, ray, recursion)){
+				if ((i.point.z > std::abs(near)) && (i.point.z < std::abs(far))){
+					closest = i;
+					break;
 				}
-			} catch (...) {
-				std::cout << "A problem has occurred in the render loop! Check your Camera.render function." << std::endl;
 			}
+
+			//TODO New rendering stuff. Needs shading and color.
+			//Should check for no intersect.
+
 
 		}
 

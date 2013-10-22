@@ -22,7 +22,7 @@ public:
 
 };
 
-void parseObj(std::string& filename, RayTracer* raytracer){
+void parseObj(std::string& filename, RayTracer& raytracer){
 	std::ifstream file(filename);
 
 	std::string line;
@@ -61,7 +61,7 @@ void parseObj(std::string& filename, RayTracer* raytracer){
 
 			s->setColor(red/255, green/255, blue/255);
 
-			raytracer->scene.addObject(s);
+			raytracer.scene.addObject(s);
 
 		}
 
@@ -71,7 +71,7 @@ void parseObj(std::string& filename, RayTracer* raytracer){
 
 }
 
-void parseCmd(std::string& filename, RayTracer* raytracer){
+void parseCmd(std::string& filename, RayTracer& raytracer){
 	std::ifstream file(filename);
 
 	std::string line, part1;
@@ -114,7 +114,7 @@ void parseCmd(std::string& filename, RayTracer* raytracer){
 			Camera* c = new Camera(prp, pnp, near, far);
 			c->setName(name);
 
-			raytracer->scene.addCamera(c);
+			raytracer.scene.addCamera(c);
 
 		} else if (part1 == "r"){
 
@@ -127,7 +127,7 @@ void parseCmd(std::string& filename, RayTracer* raytracer){
 			ss >> height;
 			ss >> recursion;
 
-			raytracer->scene.render(name, width, height, recursion);
+			raytracer.scene.render(name, width, height, recursion);
 
 		}
 
@@ -165,7 +165,7 @@ int main(int argc, char** argv){
 			std::string objTest = ".+\\.(obj)";
 			if (matches(objTest, arg)){
 
-				parseObj(arg, raytracer);
+				parseObj(arg, *raytracer);
 
 			} else if (arg == "-c"){
 
@@ -173,7 +173,7 @@ int main(int argc, char** argv){
 
 					arg = std::string(argv[++i]);
 
-					parseCmd(arg, raytracer);
+					parseCmd(arg, *raytracer);
 
 				} else {
 

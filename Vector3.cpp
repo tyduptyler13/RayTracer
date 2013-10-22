@@ -140,7 +140,7 @@ Vector3& Vector3::negate(){
 }
 
 Vector3& Vector3::normalize(){
-	return *this/=this->length();
+	return *this/=length();
 }
 
 Vector3 Vector3::cross(const Vector3& v) const{

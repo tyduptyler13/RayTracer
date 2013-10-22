@@ -1,5 +1,5 @@
 
-TARGET=HW1
+TARGET=RayTracer
 
 CC=g++
 

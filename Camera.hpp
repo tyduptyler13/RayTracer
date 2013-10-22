@@ -17,6 +17,8 @@
 
 class Camera{
 
+	Ray getProjector(size_t x, size_t y, size_t width, size_t height) const;
+
 public:
 	std::string name;
 
@@ -38,8 +40,8 @@ public:
 	/**
 	 * The image is expected to be already created with the correct dimensions.
 	 */
-	void render(MonoImage* distance, ColorImage* color, const std::vector<Object*>* const objects,
-			std::size_t width, std::size_t height, unsigned recursion);
+	void render(MonoImage* distance, ColorImage* color, const std::vector<Object*>& objects,
+			std::size_t width, std::size_t height, unsigned recursion) const;
 
 
 };
