@@ -13,6 +13,7 @@
 void Camera::render(MonoImage* distance, ColorImage* color, const std::vector<Object*>* const objects,
 		std::size_t width, std::size_t height, unsigned recursion){
 
+#pragma omp parallel for
 	for (std::size_t x = 0; x < width; ++x){
 
 		for (std::size_t y = 0; y < height; ++y){
@@ -21,8 +22,14 @@ void Camera::render(MonoImage* distance, ColorImage* color, const std::vector<Ob
 
 				Result r = RayCaster(x, y, objects, this, width, height, recursion).run().getResult();
 
-				//Set distance value;
+				//Set distance value; Distance over total possible distance.
 				float value = r.distance / std::abs(far - near);
+
+				value = (value != 0)? 1-value : value;//Simple change to allow for black background and to match the example output.
+
+				if (value < 0 || value > 1)
+					value = 0;//Too close/too far.
+
 				distance->set(x, y, value);
 
 				//Set color value;

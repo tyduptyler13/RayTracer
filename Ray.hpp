@@ -11,8 +11,6 @@
 #include "Vector3.hpp"
 #include "Matrix4.hpp"
 
-#include <memory>
-
 class Ray{
 
 public:
@@ -25,10 +23,11 @@ public:
 
 	Ray& set(const Vector3& origin, const Vector3& direction);
 	Ray& operator=(const Ray&);
-	std::unique_ptr<Vector3> at(double) const;
-	std::unique_ptr<Vector3> at(double, Vector3*) const;
+	Vector3 at(double) const;
+	Vector3& at(double, Vector3&) const;
 	Ray& recast(double t);
-	std::unique_ptr<Vector3> closestPointToPoint(const Vector3& point,  Vector3* target) const;
+	Vector3 closestPointToPoint(const Vector3& point) const;
+	Vector3& closestPointToPoint(const Vector3& point,  Vector3& target) const;
 	double distanceToPoint(const Vector3&) const;
 	Ray& applyMatrix4(const Matrix4&);
 	bool operator==(const Ray&) const;

@@ -9,7 +9,6 @@
 #define RAYCASTER_HPP_
 
 #include <vector>
-#include <memory>
 
 #include "ImageTools.hpp"
 #include "Object.hpp"

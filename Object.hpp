@@ -10,7 +10,6 @@
 
 #include<string>
 #include<vector>
-#include <memory>
 
 #include "Vector3.hpp"
 #include "ImageTools.hpp"

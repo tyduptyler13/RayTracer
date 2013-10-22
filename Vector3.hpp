@@ -5,7 +5,6 @@
 #define VECTOR3_HPP_
 
 #include <math.h>
-#include <memory>
 
 //#include "Matrix3.hpp" Cyclic
 class Matrix3;
@@ -26,19 +25,43 @@ public:
 
 	Vector3& operator=(const Vector3&);
 
-	std::unique_ptr<Vector3> operator+(double) const;
+	Vector3 operator+(double s) const{
+		Vector3 ret(*this);
+		ret += s;
+		return ret;
+	}
 	Vector3& operator+=(double);
-	std::unique_ptr<Vector3> operator+(const Vector3&) const;
+	Vector3 operator+(const Vector3& v) const{
+		Vector3 ret(*this);
+		ret += v;
+		return ret;
+	}
 	Vector3& operator+=(const Vector3&);
 
-	std::unique_ptr<Vector3> operator-(double) const;
+	Vector3 operator-(double s) const{
+		Vector3 tmp(*this);
+		tmp -= s;
+		return tmp;
+	}
 	Vector3& operator-=(double);
-	std::unique_ptr<Vector3> operator-(const Vector3&) const;
+	Vector3 operator-(const Vector3& v) const{
+		Vector3 tmp(*this);
+		tmp -= v;
+		return tmp;
+	}
 	Vector3& operator-=(const Vector3&);
 
-	std::unique_ptr<Vector3> operator*(double) const;
+	Vector3 operator*(const Vector3& v) const{
+		Vector3 tmp(*this);
+		tmp *= v;
+		return tmp;
+	}
 	Vector3& operator*=(double);
-	std::unique_ptr<Vector3> operator*(const Vector3&) const;
+	Vector3 operator*(double s) const{
+		Vector3 tmp(*this);
+		tmp *= s;
+		return tmp;
+	}
 	Vector3& operator*=(const Vector3&);
 
 	Vector3& applyMatrix3(const Matrix3&);
@@ -63,7 +86,7 @@ public:
 
 	Vector3& normalize();
 
-	std::unique_ptr<Vector3> cross(const Vector3&) const;
+	Vector3 cross(const Vector3&) const;
 	Vector3& crossVectors(const Vector3&, const Vector3&);
 
 	double distanceToSquared(const Vector3&) const;

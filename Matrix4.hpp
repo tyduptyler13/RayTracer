@@ -4,7 +4,6 @@
 #include "Vector3.hpp"
 
 #include <vector>
-#include <memory>
 
 class Matrix4{
 
@@ -52,7 +51,7 @@ public:
 
 	Matrix4& operator=(Matrix4& m);
 
-	std::unique_ptr<Matrix4> operator*(Matrix4& m);
+	Matrix4 operator*(Matrix4& m);
 
 	Matrix4& operator*=(Matrix4& m);
 

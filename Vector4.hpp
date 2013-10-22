@@ -4,8 +4,6 @@
 
 #include "Matrix4.hpp"
 
-#include <memory>
-
 /*
  * Coded with the idea of allowing the compiler to
  * make improvements. Sections with a low count of
@@ -36,7 +34,7 @@ public:
 		this->w = w;
 	}
 
-	Vector4(Vector4& v){
+	Vector4(const Vector4& v){
 		this->x = v.x;
 		this->y = v.y;
 		this->z = v.z;
@@ -52,7 +50,7 @@ public:
 		return *this;
 	}
 
-	Vector4& operator=(Vector4& v){
+	Vector4& operator=(const Vector4& v){
 		x = v.x;
 		y = v.y;
 		z = v.z;
@@ -61,10 +59,10 @@ public:
 		return *this;
 	}
 
-	std::unique_ptr<Vector4> operator+(Vector4& v){
-		Vector4* ret = new Vector4(*this);
-		*ret += v;
-		return std::unique_ptr<Vector4>(ret);
+	Vector4 operator+(Vector4& v) const{
+		Vector4 ret(*this);
+		ret += v;
+		return ret;
 	}
 
 	Vector4& operator+=(Vector4& v){
@@ -76,10 +74,10 @@ public:
 		return *this;
 	}
 
-	std::unique_ptr<Vector4> operator+(double s){
-		Vector4* ret = new Vector4(*this);
-		*ret += s;
-		return std::unique_ptr<Vector4>(ret);
+	Vector4 operator+(double s) const{
+		Vector4 ret(*this);
+		ret += s;
+		return ret;
 	}
 
 	Vector4& operator+=(double s){
@@ -91,10 +89,10 @@ public:
 		return *this;
 	}
 
-	std::unique_ptr<Vector4> operator-(Vector4& v){
-		Vector4* ret = new Vector4(*this);
-		*ret -= v;
-		return std::unique_ptr<Vector4>(ret);
+	Vector4 operator-(Vector4& v) const{
+		Vector4 ret(*this);
+		ret -= v;
+		return ret;
 	}
 
 	Vector4& operator-=(Vector4& v){
@@ -106,10 +104,10 @@ public:
 		return *this;
 	}
 
-	std::unique_ptr<Vector4> operator-(double s){
-		Vector4* ret = new Vector4(*this);
-		*ret -= s;
-		return std::unique_ptr<Vector4>(ret);
+	Vector4 operator-(double s) const{
+		Vector4 ret(*this);
+		ret -= s;
+		return ret;
 	}
 
 	Vector4& operator-=(double s){
