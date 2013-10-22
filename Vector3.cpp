@@ -31,18 +31,6 @@ Vector3& Vector3::operator=(const Vector3& v){
 	return *this;
 }
 
-std::unique_ptr<Vector3> Vector3::operator+(const Vector3& v) const{
-	Vector3* ret = new Vector3(*this);
-	*ret += v;
-	return std::unique_ptr<Vector3>(ret);
-}
-
-std::unique_ptr<Vector3> Vector3::operator+(double s) const{
-	Vector3* ret = new Vector3(*this);
-	*ret += s;
-	return std::unique_ptr<Vector3>(ret);
-}
-
 Vector3& Vector3::operator+=(const Vector3& v){
 	x += v.x;
 	y += v.y;
@@ -59,24 +47,12 @@ Vector3& Vector3::operator+=(double s){
 	return *this;
 }
 
-std::unique_ptr<Vector3> Vector3::operator-(const Vector3& v) const{
-	Vector3* tmp = new Vector3(*this);
-	*tmp -= v;
-	return std::unique_ptr<Vector3>(tmp);
-}
-
 Vector3& Vector3::operator-=(const Vector3& v){
 	x -= v.x;
 	y -= v.y;
 	z -= v.z;
 
 	return *this;
-}
-
-std::unique_ptr<Vector3> Vector3::operator-(double s) const{
-	Vector3* tmp = new Vector3(*this);
-	*tmp -= s;
-	return std::unique_ptr<Vector3>(tmp);
 }
 
 Vector3& Vector3::operator-=(double s){
@@ -87,24 +63,12 @@ Vector3& Vector3::operator-=(double s){
 	return *this;
 }
 
-std::unique_ptr<Vector3> Vector3::operator*(const Vector3& v) const{
-	Vector3* tmp = new Vector3(*this);
-	*tmp *= v;
-	return std::unique_ptr<Vector3>(tmp);
-}
-
 Vector3& Vector3::operator*=(const Vector3& v){
 	x *= v.x;
 	y *= v.y;
 	z *= v.z;
 
 	return *this;
-}
-
-std::unique_ptr<Vector3> Vector3::operator*(double s) const{
-	Vector3* tmp = new Vector3(*this);
-	*tmp *= s;
-	return std::unique_ptr<Vector3>(tmp);
 }
 
 Vector3& Vector3::operator*=(double s){
@@ -179,14 +143,14 @@ Vector3& Vector3::normalize(){
 	return *this/=this->length();
 }
 
-std::unique_ptr<Vector3> Vector3::cross(const Vector3& v) const{
-	Vector3* ret = new Vector3();
+Vector3 Vector3::cross(const Vector3& v) const{
+	Vector3 ret;
 
-	ret->x = y * v.z - z * v.y;
-	ret->y = z * v.x - x * v.z;
-	ret->z = x * v.y - y * v.x;
+	ret.x = y * v.z - z * v.y;
+	ret.y = z * v.x - x * v.z;
+	ret.z = x * v.y - y * v.x;
 
-	return std::unique_ptr<Vector3>(ret);
+	return ret;
 }
 
 Vector3& Vector3::crossVectors(const Vector3& a, const Vector3& b){

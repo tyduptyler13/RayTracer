@@ -47,10 +47,10 @@ Matrix4& Matrix4::operator=(Matrix4& m){
 }
 
 
-std::unique_ptr<Matrix4> Matrix4::operator*(Matrix4& m){
-	Matrix4* ret = new Matrix4(*this);
-	*ret *= m;
-	return std::unique_ptr<Matrix4>(ret);
+Matrix4 Matrix4::operator*(Matrix4& m){
+	Matrix4 ret(*this);
+	ret *= m;
+	return ret;
 }
 
 Matrix4& Matrix4::operator *=(Matrix4& m){

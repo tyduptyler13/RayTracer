@@ -42,9 +42,9 @@ bool Sphere::getIntersection(const Ray& r, Intersect& i) const{
 	//Clostest point on the ray to the sphere.
 	//pdistance = plane of intersection with the center of the sphere.
 	double pdistance = position.dot(r.direction);
-	std::unique_ptr<Vector3> p = r.at(pdistance);
+	Vector3 p = r.at(pdistance);
 
-	double shortestDistance = p->distanceTo(position);
+	double shortestDistance = p.distanceTo(position);
 
 	if (shortestDistance > radius || pdistance < 0){//Missed the sphere. (If distance is negative, it is behind the ray plane.)
 		return false;
@@ -56,7 +56,7 @@ bool Sphere::getIntersection(const Ray& r, Intersect& i) const{
 	double innerDistance = sqrt(pow(radius, 2) - pow(shortestDistance, 2));
 
 	i.distance = pdistance - innerDistance;//Intersection "should" always be closer. The RayCaster will fix this otherwise.
-	i.point = *(r.at(i.distance));
+	i.point = r.at(i.distance);
 
 	return true;
 

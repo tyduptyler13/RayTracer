@@ -36,55 +36,48 @@ Ray& Ray::operator=(const Ray& r){
 	return *this;
 }
 
-std::unique_ptr<Vector3> Ray::at(double t) const{
-	Vector3* v = new Vector3();
+Vector3 Ray::at(double t) const{
+	Vector3 v;
 	return at(t, v);
 }
 
-std::unique_ptr<Vector3> Ray::at(double t, Vector3* target) const{
-	((*target = direction) *= t) += origin;
-	return std::unique_ptr<Vector3>(target);
+Vector3& Ray::at(double t, Vector3& target) const{
+	target = direction * t + origin;
+	return target;
 }
 
 Ray& Ray::recast(double t){
-	//Need extra vector for values.
-	std::unique_ptr<Vector3> tmp = at(t);
-	origin = *tmp;
+	origin = at(t);
 
 	return *this;
 }
 
-std::unique_ptr<Vector3> Ray::closestPointToPoint(const Vector3& point, Vector3* target = new Vector3()) const{
-	*target = point;
-	*target -= origin;
-	double directionDistance = target->dot(direction);
+Vector3& Ray::closestPointToPoint(const Vector3& point, Vector3& target) const{
+	target = point - origin;
+	double directionDistance = target.dot(direction);
 
 	if (directionDistance < 0){
-		*target = origin;
-		return std::unique_ptr<Vector3>(target);
+		target = origin;
+		return target;
 	}
 
-	((*target = direction) *= directionDistance) += origin;
+	target = direction * directionDistance + origin;
 
-	return std::unique_ptr<Vector3>(target);
+	return target;
 }
 
 double Ray::distanceToPoint(const Vector3& point) const{
-	Vector3* v1 = new Vector3(point);
+	Vector3 v1(point);
 
-	double directionDistance = ( *v1 -= origin ).dot(origin);
+	double directionDistance = ( v1 - origin ).dot(origin);
 
 	if (directionDistance < 0){
 		return (origin.distanceTo(point));
 	}
 
-	*v1 = direction;
-	*v1 *= directionDistance;
-	*v1 += origin;
+	v1 = direction * directionDistance + origin;
 
-	double distanceTo = v1->distanceTo(point);
-
-	delete v1;
+	double distanceTo = v1.distanceTo(point);
 
 	return distanceTo;
 }

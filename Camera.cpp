@@ -13,6 +13,7 @@
 void Camera::render(MonoImage* distance, ColorImage* color, const std::vector<Object*>* const objects,
 		std::size_t width, std::size_t height, unsigned recursion){
 
+#pragma omp parallel for
 	for (std::size_t x = 0; x < width; ++x){
 
 		for (std::size_t y = 0; y < height; ++y){
