@@ -5,7 +5,7 @@
 
 #include "Object.hpp"
 
-class Sphere : public Object{
+class Sphere : public Object3D{
 
 public:
 	double radius;
@@ -47,7 +47,7 @@ public:
 		return (point.distanceTo(position) <= radius);
 	}
 
-	bool getIntersection(const Ray& r, Intersect& i) const;
+	bool getIntersection(const Projector& p, Intersect& i) const;
 
 };
 

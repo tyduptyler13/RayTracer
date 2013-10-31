@@ -78,8 +78,6 @@ void parseCmd(std::string& filename, RayTracer& raytracer){
 
 	while(std::getline(file, line)){
 
-		//std::cout << "Debug: Line: " << line << std::endl;
-
 		if (line.length() == 0) continue;//Empty line.
 
 		std::stringstream ss;
@@ -87,8 +85,6 @@ void parseCmd(std::string& filename, RayTracer& raytracer){
 		ss << line;
 
 		ss >> part1;
-
-		//std::cout << "Debug: command = " << part1 << std::endl;
 
 		if (part1 == "c"){
 

@@ -37,26 +37,35 @@ bool Sphere::operator==(const Sphere& s) const{
 
 
 
-bool Sphere::getIntersection(const Ray& r, Intersect& i) const{
+bool Sphere::getIntersection(const Projector& p, Intersect& i) const{
 
-	//Clostest point on the ray to the sphere.
-	//pdistance = plane of intersection with the center of the sphere.
-	double pdistance = position.dot(r.direction);
-	Vector3 p = r.at(pdistance);
+	//Modified closestPointToPoint{
+	Vector3 point = position - p.ray.origin;
+	double directionDistance = point.dot(p.ray.direction);
 
-	double shortestDistance = p.distanceTo(position);
-
-	if (shortestDistance > radius || pdistance < 0){//Missed the sphere. (If distance is negative, it is behind the ray plane.)
+	if (directionDistance < 0){ //Miss
 		return false;
 	}
 
+	point = p.ray.direction * directionDistance + p.ray.origin;
+	//}
+
+	double shortestDistance = point.distanceTo(position);
+
+	if (shortestDistance > radius ){//Miss
+		return false;
+	}
 
 
 	//Distance from the point on the ray to both intersections. (could be 0 if hitting edge)
 	double innerDistance = sqrt(pow(radius, 2) - pow(shortestDistance, 2));
 
-	i.distance = pdistance - innerDistance;//Intersection "should" always be closer. The RayCaster will fix this otherwise.
-	i.point = r.at(i.distance);
+	i.distance = directionDistance - innerDistance;//Intersection "should" always be closer. The RayCaster will fix this otherwise.
+	i.point = p.ray.at(i.distance);
+
+	if (i.distance < p.dist || i.distance > p.depth){
+		return false;
+	}
 
 	return true;
 

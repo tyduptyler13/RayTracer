@@ -7,34 +7,38 @@
 
 #include "Camera.hpp"
 #include "RayCaster.hpp"
+#include "Ray.hpp"
 
 #include <cmath>
 
-Ray Camera::getProjector(size_t x, size_t y, size_t width, size_t height) const{
+#define direction rotation
 
-	double near = -(this->near);
-	double far = -(this->far);
+Projector Camera::getProjector(size_t x, size_t y, size_t width, size_t height) const{
 
-	//Hacky temporary solution to unprojecting screen coordinates to world coordinates.
-	//This only works if the camera is looking down the z axis.
+	double nx = (2 * x / width) - 1;
+	double ny = (2 * y / height) - 1;
 
-	double tmpx, tmpy;
-	double halfw = width / 2;
-	double halfh = height / 2;
-	tmpx = (-halfw + x) / halfw;//Range from -1 to 1 from the image width. (Corrected for 0 starting on the left.)
-	tmpy = (halfh - y) / halfh;//Range from -1 to 1 from the image height. (Corrected for 0 starting at the top.)
+	//New camera coordinate system.
+	Vector3 right = direction.cross(up);
 
-	Vector3 other = Vector3(tmpx, tmpy, near);//Point the vector at the image plane where the image pixels should be.
+	Vector3 point = right * nx + up * ny;
 
-	other.normalize();
+	double dist = point.length();
 
-	Ray ray = Ray(position, other);
+	//Similar Triangles.
+	double depth = (dist / near) * far;
 
-	return ray;
+	//Normalize point. No need to call normalize as
+	//it will call length again.
+	Ray ray(position, point /= dist);
+
+	Projector p(ray, dist, depth);
+
+	return p;
 
 }
 
-void Camera::render(MonoImage* distance, ColorImage* color, const std::vector<Object*>& objects,
+void Camera::render(MonoImage& distance, ColorImage& color, const std::vector<Object3D*>& objects,
 		std::size_t width, std::size_t height, unsigned recursion) const{
 
 #pragma omp parallel for
@@ -42,17 +46,12 @@ void Camera::render(MonoImage* distance, ColorImage* color, const std::vector<Ob
 
 		for (std::size_t y = 0; y < height; ++y){
 
-			Ray ray = getProjector(x, y, width, height);
+			Projector p = getProjector(x, y, width, height);
 
 			RayCaster rc;
 
-			Intersect closest;
-			for (Intersect i : rc.cast(objects, ray, recursion)){
-				if ((i.point.z > std::abs(near)) && (i.point.z < std::abs(far))){
-					closest = i;
-					break;
-				}
-			}
+			//TODO handle result.
+			rc.cast(objects, p, recursion);
 
 			//TODO New rendering stuff. Needs shading and color.
 			//Should check for no intersect.

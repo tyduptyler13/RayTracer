@@ -12,21 +12,23 @@
 
 Vector3 origin;
 
-std::vector<Intersect> RayCaster::cast(const std::vector<Object*>& objects, const Ray& r, unsigned recursion) const{
+std::vector<Intersect> RayCaster::cast(const std::vector<Object3D*>& objects, const Projector& p, unsigned recursion) const{
 
 	std::vector<Intersect> intersects;
 
-	for (Object* object : objects){
+	for (Object3D* object : objects){
 
 		Intersect i = Intersect();
 
-		if (object->getIntersection(r, i)){
+		if (object->getIntersection(p, i)){
 
 			intersects.push_back(i);
 
 		}
 
 	}
+
+	sort(intersects.begin(), intersects.end());
 
 	return intersects;
 }

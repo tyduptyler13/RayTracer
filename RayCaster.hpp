@@ -12,7 +12,7 @@
 
 #include "ImageTools.hpp"
 #include "Object.hpp"
-#include "Ray.hpp"
+#include "Projector.hpp"
 
 class RayCaster{
 
@@ -22,7 +22,7 @@ public:
 
 	RayCaster(){}
 
-	std::vector<Intersect> cast(const std::vector<Object*>&, const Ray&, unsigned recursion) const;
+	std::vector<Intersect> cast(const std::vector<Object3D*>&, const Projector&, unsigned recursion) const;
 
 };
 

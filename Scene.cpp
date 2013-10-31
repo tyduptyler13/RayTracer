@@ -1,17 +1,12 @@
 
 #include "Scene.hpp"
 
-Scene::Scene(){
-	objects = std::vector<Object*>();
-	cameras = std::vector<Camera*>();
-}
-
 /**
  * If a scene is ever deleted, its contents will also be
  * deleted as well, including all objects!
  */
 Scene::~Scene(){
-	for (Object* o : objects){
+	for (Object3D* o : objects){
 		delete o;
 	}
 	objects.clear();
@@ -23,7 +18,7 @@ Scene::~Scene(){
 	cameras.clear();
 }
 
-void Scene::addObject(Object* o){
+void Scene::addObject(Object3D* o){
 
 	for (Object* object : objects){
 		if (object == o){
@@ -34,7 +29,7 @@ void Scene::addObject(Object* o){
 	objects.push_back(o);
 }
 
-void Scene::removeObject(Object* o){
+void Scene::removeObject(Object3D* o){
 
 	for(std::size_t i = 0; i < objects.size();++i){
 

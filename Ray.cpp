@@ -52,6 +52,12 @@ Ray& Ray::recast(double t){
 	return *this;
 }
 
+Vector3 Ray::closestPointToPoint(const Vector3& point) const{
+	Vector3 t;
+	closestPointToPoint(point, t);
+	return t;
+}
+
 Vector3& Ray::closestPointToPoint(const Vector3& point, Vector3& target) const{
 	target = point - origin;
 	double directionDistance = target.dot(direction);

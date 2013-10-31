@@ -10,21 +10,21 @@
 
 class Scene{
 
-	std::vector<Object*> objects;
+	std::vector<Object3D*> objects;
 	std::vector<Camera*> cameras;
 
 public:
 
-	Scene();
+	Scene(){};
 	~Scene();
 
-	void addObject(Object* s);
-	void removeObject(Object* s);
+	void addObject(Object3D* s);
+	void removeObject(Object3D* s);
 
 	void addCamera(Camera* c);
 	void removeCamera(Camera* c);
 
-	const std::vector<Object*>& getObjects() const{
+	const std::vector<Object3D*>& getObjects() const{
 		return objects;
 	}
 
@@ -32,13 +32,14 @@ public:
 
 		for (Camera* c : cameras){
 
-			ColorImage* color = new ColorImage(width, height);
-			MonoImage* depth = new MonoImage(width, height);
+			ColorImage color = ColorImage(width, height);
+			MonoImage depth = MonoImage(width, height);
 
-			c->render(depth, color, &objects, width, height, recursion);
+			c->render(depth, color, objects, width, height, recursion);
 
-			color->save(name + "_" + c->name + "_color.ppm");
-			depth->save(name + "_" + c->name + "_depth.ppm");
+			color.save(name + "_" + c->name + "_color.ppm");
+			depth.save(name + "_" + c->name + "_depth.ppm");
+
 		}
 
 	}
