@@ -7,11 +7,11 @@ class Projector{
 
 public:
 
-	Projector(Ray& r, double dist, double depth) : ray(r), dist(dist), depth(depth) {}
+	Projector(Ray& r, double near, double far) : ray(r), near(near), far(far) {}
 
 	Ray ray;
-	double dist;
-	double depth;
+	double near;
+	double far;
 
 };
 

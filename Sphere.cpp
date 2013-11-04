@@ -63,7 +63,7 @@ bool Sphere::getIntersection(const Projector& p, Intersect& i) const{
 	i.distance = directionDistance - innerDistance;//Intersection "should" always be closer. The RayCaster will fix this otherwise.
 	i.point = p.ray.at(i.distance);
 
-	if (i.distance < p.dist || i.distance > p.depth){
+	if (i.distance < p.near || i.distance > p.far){
 		return false;
 	}
 

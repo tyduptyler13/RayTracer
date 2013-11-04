@@ -23,10 +23,10 @@ Projector Camera::getProjector(size_t x, size_t y, size_t width, size_t height) 
 
 	Vector3 point = right * nx + up * ny;
 
-	double dist = point.length();
+	double dist = point.length(); //Adjusted near.
 
 	//Similar Triangles.
-	double depth = (dist / near) * far;
+	double depth = (dist / near) * far; //Adjusted far.
 
 	//Normalize point. No need to call normalize as
 	//it will call length again.
