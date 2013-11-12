@@ -37,7 +37,7 @@ public:
 	void compute(){
 		u = b - a;
 		v = c - a;
-		normal = (u).cross(v);
+		normal = u.cross(v);
 	}
 
 	bool operator==(const Face3& f) const{

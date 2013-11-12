@@ -43,9 +43,7 @@ public:
 
 	Sphere& translate(const Vector3&);
 
-	bool containsPoint(const Vector3& point) const{
-		return (point.distanceTo(position) <= radius);
-	}
+	bool containsPoint(const Vector3& point) const;
 
 	bool getIntersection(const Projector& p, Intersect& i) const;
 

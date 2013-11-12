@@ -41,7 +41,9 @@ Projector Camera::getProjector(size_t x, size_t y, size_t width, size_t height) 
 void Camera::render(MonoImage& distance, ColorImage& color, const std::vector<Object3D*>& objects,
 		std::size_t width, std::size_t height, unsigned recursion) const{
 
-#pragma omp parallel for
+	Color defaultColor = Color();
+
+	#pragma omp parallel for
 	for (std::size_t x = 0; x < width; ++x){
 
 		for (std::size_t y = 0; y < height; ++y){
@@ -50,12 +52,20 @@ void Camera::render(MonoImage& distance, ColorImage& color, const std::vector<Ob
 
 			RayCaster rc;
 
-			//TODO handle result.
-			rc.cast(objects, p, recursion);
+			std::vector<Intersect> intersections = rc.cast(objects, p, recursion);
+
+			if (intersections.size() == 0){
+				distance.set(x, y, 0); //Default black.
+				color.set(x, y, defaultColor); //Default as default Color(black).
+				continue;
+			}
+
+			Intersect nearest = intersections[0];
+
+			distance.set(x, y, nearest.distance / (p.far - p.near)); //Normalized distance value.
+			color.set(x, y, nearest.object->color); //Use this for now.
 
 			//TODO New rendering stuff. Needs shading and color.
-			//Should check for no intersect.
-
 
 		}
 

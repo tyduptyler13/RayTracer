@@ -4,6 +4,8 @@
 
 #include "Matrix4.hpp"
 
+#include <cmath>
+
 /*
  * Coded with the idea of allowing the compiler to
  * make improvements. Sections with a low count of
@@ -162,7 +164,7 @@ public:
 	}
 
 	double length() const{
-		return sqrt(lengthSq());
+		return std::sqrt(lengthSq());
 	}
 
 	Vector4& normalize(){

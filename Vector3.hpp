@@ -4,11 +4,11 @@
 #ifndef VECTOR3_HPP_
 #define VECTOR3_HPP_
 
-#include <math.h>
+#include <cmath>
 
-//#include "Matrix3.hpp" Cyclic
+//#include "Matrix3.hpp" // Cyclic
 class Matrix3;
-//#include "Matrix4.hpp" Cyclic
+//#include "Matrix4.hpp" // Cyclic
 class Matrix4;
 
 
@@ -81,7 +81,7 @@ public:
 	};
 
 	double length() const{
-		return sqrt(this->lengthSq());
+		return std::sqrt(this->lengthSq());
 	}
 
 	Vector3& normalize();
@@ -91,7 +91,7 @@ public:
 
 	double distanceToSquared(const Vector3&) const;
 	double distanceTo(const Vector3& v) const{
-		return sqrt(this->distanceToSquared(v));
+		return std::sqrt(this->distanceToSquared(v));
 	};
 
 	bool operator==(const Vector3&) const;

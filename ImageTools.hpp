@@ -17,10 +17,10 @@
 /**
  * By default this will always go to black.
  */
-struct Color{//White default.
-	float r = 1;
-	float g = 1;
-	float b = 1;
+struct Color{//Black default.
+	float r = 0;
+	float g = 0;
+	float b = 0;
 };
 
 template<class T>
@@ -36,7 +36,7 @@ public:
 	Image(std::size_t width, std::size_t height) : width(width), height(height){
 		data = new T*[width];
 		for (std::size_t i = 0; i < width; ++i){
-			data[i] = new T[height]();
+			data[i] = new T[height];
 		}
 	}
 
@@ -75,7 +75,7 @@ public:
 
 	ColorImage(std::size_t width, std::size_t height) : Image<Color>(width, height){}
 
-	void set(std::size_t x, std::size_t y, Color& c){
+	void set(std::size_t x, std::size_t y, const Color& c){
 		data[x][y] = c;
 	}
 

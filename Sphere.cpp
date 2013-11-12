@@ -35,7 +35,9 @@ bool Sphere::operator==(const Sphere& s) const{
 	return (position == s.position) && (radius == radius);
 }
 
-
+bool Sphere::containsPoint(const Vector3& point) const{
+	return (point.distanceTo(position) <= radius);
+}
 
 bool Sphere::getIntersection(const Projector& p, Intersect& i) const{
 
@@ -60,8 +62,10 @@ bool Sphere::getIntersection(const Projector& p, Intersect& i) const{
 	//Distance from the point on the ray to both intersections. (could be 0 if hitting edge)
 	double innerDistance = sqrt(pow(radius, 2) - pow(shortestDistance, 2));
 
-	i.distance = directionDistance - innerDistance;//Intersection "should" always be closer. The RayCaster will fix this otherwise.
-	i.point = p.ray.at(i.distance);
+	double totalDistance = directionDistance - innerDistance;
+
+	i.distance = totalDistance - p.near; //Adjusted distance value.
+	i.point = p.ray.at(totalDistance);
 
 	if (i.distance < p.near || i.distance > p.far){
 		return false;

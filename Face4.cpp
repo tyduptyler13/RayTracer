@@ -1,6 +1,8 @@
 
 #include "Face4.hpp"
 
+#include "Face3.hpp"
+
 /**
  * This uses the logic that a point when related to
  * a point known to exist on the plane,
@@ -11,11 +13,6 @@ bool Face4::containsPoint(const Vector3& point) const{
 
 	return ((point-b).dot(normal) == 0);
 
-}
-
-void Face4::getBox(){
-	box.reset();
-	box.addPoint(a).addPoint(b).addPoint(c).addPoint(d);
 }
 
 /**

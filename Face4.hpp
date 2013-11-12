@@ -15,10 +15,6 @@
 
 class Face4 : public Object3D{
 
-	Box box;
-
-	void getBox();
-
 public:
 	Vector3 a, b, c, d, normal;
 
@@ -26,7 +22,6 @@ public:
 	Face4(const Vector3& a, const Vector3& b, const Vector3& c, const Vector3& d)
 	: a(a), b(b), c(c), d(d){
 		computeNormal();
-		getBox();
 	}
 	Face4(const Face4& f){
 		a = f.a;
@@ -35,7 +30,6 @@ public:
 		d = f.d;
 
 		computeNormal();
-		getBox();
 	}
 
 	Face4& set(const Vector3& a, const Vector3& b, const Vector3& c){
@@ -52,7 +46,6 @@ public:
 		d = f.d;
 
 		computeNormal();
-		getBox();
 		return *this;
 	}
 
