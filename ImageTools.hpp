@@ -17,10 +17,29 @@
 /**
  * By default this will always go to black.
  */
-struct Color{//Black default.
-	float r = 0;
-	float g = 0;
-	float b = 0;
+class Color{
+
+public:
+	float r;
+	float g;
+	float b;
+
+	Color(){
+		r = 0;
+		g = 0;
+		b = 0;
+	}
+
+	Color(float r, float g, float b) : r(r), g(g), b(b) {}
+
+	void set(float r, float g, float b){
+
+		this->r = r;
+		this->g = g;
+		this->b = b;
+
+	}
+
 };
 
 template<class T>

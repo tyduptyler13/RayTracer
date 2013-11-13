@@ -17,14 +17,6 @@ Sphere::Sphere(const Sphere& s){
 	radius = s.radius;
 }
 
-Sphere& Sphere::setColor(float r, float g, float b){
-	color.r = r;
-	color.g = g;
-	color.b = b;
-
-	return *this;
-}
-
 Sphere& Sphere::translate(const Vector3& v){
 	position += v;
 

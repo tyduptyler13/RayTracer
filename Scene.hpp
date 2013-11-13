@@ -6,12 +6,14 @@
 
 #include "Object.hpp"
 #include "Camera.hpp"
+#include "Light.hpp"
 #include "ImageTools.hpp"
 
 class Scene{
 
 	std::vector<Object3D*> objects;
 	std::vector<Camera*> cameras;
+	std::vector<Light*> lights;
 
 public:
 
@@ -28,21 +30,11 @@ public:
 		return objects;
 	}
 
-	void render(std::string name, std::size_t width, std::size_t height, unsigned recursion){
-
-		for (Camera* c : cameras){
-
-			ColorImage color = ColorImage(width, height);
-			MonoImage depth = MonoImage(width, height);
-
-			c->render(depth, color, objects, width, height, recursion);
-
-			color.save(name + "_" + c->name + "_color.ppm");
-			depth.save(name + "_" + c->name + "_depth.ppm");
-
-		}
-
+	const std::vector<Light*>& getLights() const{
+		return lights;
 	}
+
+	void render(std::string name, std::size_t width, std::size_t height, unsigned recursion) const;
 
 };
 

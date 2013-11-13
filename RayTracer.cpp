@@ -59,7 +59,7 @@ void parseObj(std::string& filename, RayTracer& raytracer){
 			Sphere* s = new Sphere(v, r);
 			s->name = name;
 
-			s->setColor(red/255, green/255, blue/255);
+			s->color.set(red/255, green/255, blue/255);
 
 			raytracer.scene.addObject(s);
 

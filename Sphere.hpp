@@ -21,13 +21,6 @@ public:
 		return *this;
 	}
 
-	Sphere& setColor(float r, float g, float b);
-
-	Sphere& setName(std::string s){
-		name = s;
-		return *this;
-	}
-
 	Sphere& operator=(const Sphere& s){
 		position = s.position;
 		radius = s.radius;

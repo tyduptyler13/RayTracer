@@ -8,6 +8,7 @@
 #include "Camera.hpp"
 #include "RayCaster.hpp"
 #include "Ray.hpp"
+#include "Scene.hpp"
 
 #include <cmath>
 
@@ -38,7 +39,7 @@ Projector Camera::getProjector(size_t x, size_t y, size_t width, size_t height) 
 
 }
 
-void Camera::render(MonoImage& distance, ColorImage& color, const std::vector<Object3D*>& objects,
+void Camera::render(MonoImage& distance, ColorImage& color, const Scene& scene,
 		std::size_t width, std::size_t height, unsigned recursion) const{
 
 	Color defaultColor = Color();
@@ -52,7 +53,7 @@ void Camera::render(MonoImage& distance, ColorImage& color, const std::vector<Ob
 
 			RayCaster rc;
 
-			std::vector<Intersect> intersections = rc.cast(objects, p, recursion);
+			std::vector<Intersect> intersections = rc.cast(scene.getObjects(), p, recursion);
 
 			if (intersections.size() == 0){
 				distance.set(x, y, 0); //Default black.

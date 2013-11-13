@@ -41,7 +41,7 @@ bool Face4::getIntersection(const Projector& p, Intersect& i) const{
 
 		return Face3(a, b, c).getIntersection(p, i);
 
-	} else { //C to D and B
+	} else { //C to B and D
 		//The edge between D and B will be excluded in this test.
 
 		return Face3(c, b, d).getIntersection(p, i);

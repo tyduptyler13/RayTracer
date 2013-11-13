@@ -64,3 +64,19 @@ void Scene::removeCamera(Camera* c){
 
 	}
 }
+
+void Scene::render(std::string name, std::size_t width, std::size_t height, unsigned recursion) const{
+
+	for (Camera* c : cameras){
+
+		ColorImage color = ColorImage(width, height);
+		MonoImage depth = MonoImage(width, height);
+
+		c->render(depth, color, *this, width, height, recursion);
+
+		color.save(name + "_" + c->name + "_color.ppm");
+		depth.save(name + "_" + c->name + "_depth.ppm");
+
+	}
+
+}
