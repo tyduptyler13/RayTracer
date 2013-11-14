@@ -1,4 +1,8 @@
 RayTracer
+
+#A bug in one of my eclipse projects...
+.classpath
+
 .project
 .settings
 .cproject
@@ -20,3 +24,4 @@ RayTracer
 *.a
 
 /tydup13.tar
+test/

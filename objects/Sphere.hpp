@@ -40,6 +40,17 @@ public:
 
 	bool getIntersection(const Projector& p, Intersect& i) const;
 
+	std::vector<Vector3> getPoints() const{
+
+		std::vector<Vector3> points;
+
+		//Return diagonal corners. This object is always perfectly round.
+		points.push_back(position + Vector3(radius, radius, radius));
+		points.push_back(position - Vector3(radius, radius, radius));
+
+		return points;
+	}
+
 };
 
 #endif

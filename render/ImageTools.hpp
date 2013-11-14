@@ -81,6 +81,10 @@ public:
 		return *this;
 	}
 
+	bool operator==(const std::string& s){
+		return (s == name);
+	}
+
 };
 
 template<class T>

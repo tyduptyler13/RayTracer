@@ -13,7 +13,7 @@
 //Some tools
 class Box{
 
-	static const double inf = std::numeric_limits<double>::infinity();
+	const double inf = std::numeric_limits<double>::infinity();
 
 public:
 	Vector3 min, max;
@@ -75,7 +75,7 @@ public:
 	}
 
 	Vector3 center() const{
-		return (min + max) / 2;
+		return (min + max) * 0.5;
 	}
 
 	Vector3 size() const{

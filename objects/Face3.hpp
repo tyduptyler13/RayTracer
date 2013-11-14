@@ -54,6 +54,17 @@ public:
 
 	bool containsPoint(const Vector3& point) const;
 	bool getIntersection(const Projector&, Intersect&) const;
+	std::vector<Vector3> getPoints() const{
+
+		std::vector<Vector3> points;
+
+		points.push_back(a);
+		points.push_back(b);
+		points.push_back(c);
+
+		return points;
+
+	}
 
 };
 

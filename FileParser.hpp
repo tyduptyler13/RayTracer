@@ -13,61 +13,16 @@
 #include <sstream>
 #include <vector>
 
+#include "Group.hpp"
+#include "Face3.hpp"
+#include "Face4.hpp"
+
 /**
  * This file will be included after RayTracer.
  * It exists to keep things clean.
  */
 
 std::map<std::string, Material> materials;
-
-void parseObj(std::string& filename, Scene& scene){
-	std::ifstream file(filename);
-
-	std::string line;
-
-	while(std::getline(file, line)){
-
-		if (line.length() == 0) continue;//Empty line.
-
-		std::stringstream ss;
-		std::string part1;
-
-		ss << line;
-
-		ss >> part1;
-
-		if (part1 == "s"){
-			double x, y, z, r;
-			std::string name;
-
-			ss >> name;
-
-			ss >> x;
-			ss >> y;
-			ss >> z;
-			ss >> r;
-
-			float red, green, blue;
-
-			ss >> red;
-			ss >> green;
-			ss >> blue;
-
-			Vector3 v = Vector3(x, y, z);
-			Sphere* s = new Sphere(v, r);
-			s->name = name;
-
-			//s->color.set(red/255, green/255, blue/255);
-
-			scene.addObject(s);
-
-		}
-
-	}
-
-	file.close();
-
-}
 
 void parsemtl(std::string& filename){
 	std::ifstream file(filename);
@@ -128,9 +83,109 @@ void parsemtl(std::string& filename){
 	}
 
 	//Add the last one because nothing comes after it.
-	if (!cm.name.empty()){
+	if (!cm.name.empty()){//If its empty then the file doesn't define anything.
 		materials.insert(std::pair<std::string, Material>(cm.name, cm));
 	}
+
+}
+
+void parseObj(std::string& filename, Scene& scene){
+	std::ifstream file(filename);
+
+	std::string line;
+
+	while(std::getline(file, line)){
+
+		if (line.length() == 0) continue;//Empty line.
+
+		std::stringstream ss;
+		std::string part1;
+
+		//State machine parts.
+		std::string cm; //Current material name.
+		Group* cg = NULL;//Current group.
+		std::vector<Vector3> vectorList;//Zero based list of vertices.
+
+		ss << line;
+
+		ss >> part1;
+
+		if (part1 == "v"){
+
+			double x, y, z;
+			ss >> x >> y >> z;
+
+			vectorList.push_back(Vector3(x, y, z));
+
+		} else if (part1 == "s"){
+			double x, y, z, r;
+			std::string name;
+
+			ss >> name;
+
+			ss >> x;
+			ss >> y;
+			ss >> z;
+			ss >> r;
+
+			Vector3 v = Vector3(x, y, z);
+			Sphere* s = new Sphere(v, r);
+			s->name = name;
+
+			s->material = materials.find(cm)->second;
+
+			scene.addObject(s);
+
+		} else if (part1 == "f"){
+
+			size_t a, b, c, d = 0;
+
+			ss >> a >> b >> c;
+
+			if ((ss >> d).fail() || !(ss >> std::ws).eof()){
+				Face3* face = new Face3(vectorList[a+1], vectorList[b+1], vectorList[c+1]);
+				cg->addChild(face);
+			} else {
+				Face4* face = new Face4(vectorList[a+1], vectorList[b+1], vectorList[c+1], vectorList[d+1]);
+				cg->addChild(face);
+			}
+
+			if (cg == NULL){
+
+				std::cout << "WARNING: Group was not defined. Adding raw face." << std::endl;
+
+
+			} else {
+
+
+
+			}
+
+		} else if (part1 == "g"){
+
+			std::string name;
+			ss >> name;
+
+			cg = new Group();
+			scene.addObject(cg);
+
+		} else if (part1 == "usemtl"){
+
+			std::string part2;
+			ss >> cm;
+
+		} else if (part1 == "mtllib"){
+
+			std::string filename;
+			ss >> filename;
+
+			parsemtl(filename);
+
+		}
+
+	}
+
+	file.close();
 
 }
 

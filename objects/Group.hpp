@@ -22,20 +22,42 @@
  */
 class Group : public Object3D{
 
-	std::vector<Object3D> children;
+	std::vector<Object3D*> children;
 	Box box;
 
 public:
 
 	Group(){}
-	Group(std::string& name) : name(name) {}
+	Group(std::string& name){
+		this->name = name;
+	}
+
+	~Group(){
+		for (Object3D* child : children){
+			delete child;
+		}
+	}
+
+	/**
+	 * Adds child and creates a bounding box around all
+	 * its contains points. Speeds up rendering considerably.
+	 */
+	Group& addChild(Object3D* child){
+		children.push_back(child);
+
+		for(Vector3 point : child->getPoints()){
+			box.addPoint(point);
+		}
+
+		return *this;
+	}
 
 	bool containsPoint(const Vector3& point) const{
 		if (box.containsPoint(point)){
 
 			for (size_t i = 0; i < children.size(); ++i){
 
-				if (children[i].containsPoint(point)){
+				if (children[i]->containsPoint(point)){
 					return true;
 				}
 
@@ -54,7 +76,7 @@ public:
 
 			for (size_t x = 0; x < children.size(); ++x){
 
-				if (children[x].getIntersection(p, i)){
+				if (children[x]->getIntersection(p, i)){
 
 					intersections.push_back(i);
 
@@ -81,6 +103,21 @@ public:
 			return false;
 
 		}
+
+	}
+
+	std::vector<Vector3> getPoints() const{
+
+		std::vector<Vector3> points;
+
+		for (size_t i = 0; i < children.size(); ++i){
+
+			std::vector<Vector3> cpoints = children[i]->getPoints();
+			points.insert(points.end(), cpoints.begin(), cpoints.end());
+
+		}
+
+		return points;
 
 	}
 
