@@ -3,7 +3,7 @@ TARGET=RayTracer
 
 CC=g++
 
-FLAGS=-Wall -ansi -Wextra -pedantic -g -Og -std=c++11
+FLAGS=-Wall -ansi -Wextra -pedantic -g -O2 -std=c++11
 
 all: build
 
@@ -19,8 +19,8 @@ Math.o: Vector4.o Vector3.o Matrix4.o Matrix3.o Ray.o RayCaster.o
 Objects.o: Sphere.o Face4.o Face3.o
 	ld -r Sphere.o Face4.o Face3.o -o Objects.o
 
-Render.o: Scene.o Camera.o
-	ld -r Scene.o Camera.o -o Render.o
+Render.o: Scene.o Camera.o ImageTools.o
+	ld -r Scene.o Camera.o -o Render.o ImageTools.o
 
 Camera.o: Camera.cpp Camera.hpp
 	$(CC) $(FLAGS) -fopenmp -c Camera.cpp
@@ -54,3 +54,6 @@ Face3.o: Face3.hpp Face3.cpp
 
 Face4.o: Face4.hpp Face4.cpp
 	$(CC) $(FLAGS) -c Face4.cpp
+
+ImageTools.o: ImageTools.hpp ImageTools.cpp
+	$(CC) $(FLAGS) -c ImageTools.cpp

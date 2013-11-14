@@ -8,9 +8,8 @@
 #ifndef IMAGETOOLS_HPP_
 #define IMAGETOOLS_HPP_
 
-#include<string>
-#include<fstream>
-#include<iostream>
+#include <fstream>
+#include <string>
 
 #define MAX 256
 
@@ -32,12 +31,54 @@ public:
 
 	Color(float r, float g, float b) : r(r), g(g), b(b) {}
 
-	void set(float r, float g, float b){
+	Color(const Color& c){
+		r = c.r;
+		g = c.g;
+		b = c.b;
+	}
+
+	inline void set(float r, float g, float b){
 
 		this->r = r;
 		this->g = g;
 		this->b = b;
 
+	}
+
+	Color& operator=(const Color& c){
+		r = c.r;
+		g = c.g;
+		b = c.b;
+
+		return *this;
+	}
+
+};
+
+class Material{
+
+public:
+
+	std::string name;
+
+	Color diffuse;
+	Color specular;
+	Color ambient;
+
+	Material(){}
+	Material(std::string& name) : name(name) {}
+	Material(std::string& name, Color& diffuse, Color& specular, Color& ambient)
+		: name(name), diffuse(diffuse), specular(specular), ambient(ambient) {}
+
+	Material(const Material& m) : name(m.name), diffuse(m.diffuse), specular(m.specular), ambient(m.ambient) {}
+
+	Material& operator=(const Material& m){
+		name = m.name;
+		diffuse = m.diffuse;
+		specular = m.specular;
+		ambient = m.ambient;
+
+		return *this;
 	}
 
 };
@@ -67,16 +108,16 @@ public:
 		delete[] data;
 	}
 
-	T& get(std::size_t x, std::size_t y){
+	T& get(std::size_t x, std::size_t y) const{
 		return data[x][y];
 	}
 
-	virtual void save(const std::string&) = 0;
+	virtual void save(const std::string&) const = 0;
 
 	/**
 	 * Assuming the input is between 0 and 1.
 	 */
-	inline int map(float in){
+	inline int map(float in) const{
 		return (int)(MAX * in);
 	}
 
@@ -84,7 +125,7 @@ public:
 
 class ColorImage : public Image<Color>{
 
-	void printColor(Color& c, std::ofstream& out){
+	void printColor(const Color& c, std::ofstream& out) const{
 
 		out << map(c.r) << " " << map(c.g) << " " << map(c.b) << " ";
 
@@ -98,40 +139,12 @@ public:
 		data[x][y] = c;
 	}
 
-	void save(const std::string& filename){
-
-		std::ofstream file(filename);
-
-		if (file.is_open()){
-			file << "P3" << std::endl;
-			file << "# (width) (height) (max_value)" << std::endl;
-			file << width << " " << height << " " << MAX << std::endl;
-			file << "# [color (RGB)]..." << std::endl;
-
-			for (std::size_t y = 0; y < height; ++y){
-
-				for (std::size_t x = 0; x < width; ++x){
-
-					printColor(get(x, y), file);
-
-				}
-
-				file << std::endl;//Split between lines.
-
-			}
-
-			file.close();
-		} else {
-			std::cout << "Could not open file! (" << filename << ")" << std::endl;
-		}
-
-	}
-
+	void save(const std::string& filename) const;
 };
 
 class MonoImage : Image<float>{
 
-	void printColor(float f, std::ofstream& out){
+	void printColor(float f, std::ofstream& out) const{
 
 		out << map(f) << " ";
 
@@ -145,7 +158,7 @@ public:
 	 * Had to change the get signature because the inherited one returns a reference.
 	 * To change values of this image, use set.
 	 */
-	float get(std::size_t x, std::size_t y){
+	float get(std::size_t x, std::size_t y) const{
 		return data[x][y];
 	}
 
@@ -153,34 +166,7 @@ public:
 		data[x][y] = value;
 	}
 
-	void save(const std::string& filename){
-
-		std::ofstream file(filename);
-
-		if (file.is_open()){
-			file << "P2" << std::endl;
-			file << "# (width) (height) (max_value)" << std::endl;
-			file << width << " " << height << " " << MAX << std::endl;
-			file << "# [level]..." << std::endl;
-
-			for (std::size_t y = 0; y < height; ++y){
-
-				for (std::size_t x = 0; x < width; ++x){
-
-					printColor(get(x, y), file);
-
-				}
-
-				file << std::endl;//Split between lines.
-
-			}
-
-			file.close();
-		} else {
-			std::cout << "Could not open file! (" << filename << ")" << std::endl;
-		}
-
-	}
+	void save(const std::string& filename) const;
 
 };
 

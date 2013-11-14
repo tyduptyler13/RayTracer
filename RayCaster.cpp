@@ -18,7 +18,7 @@ std::vector<Intersect> RayCaster::cast(const std::vector<Object3D*>& objects, co
 
 	for (Object3D* object : objects){
 
-		Intersect i = Intersect(object);
+		Intersect i = Intersect();
 
 		if (object->getIntersection(p, i)){
 

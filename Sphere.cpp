@@ -2,9 +2,7 @@
 #include "Sphere.hpp"
 
 Sphere::Sphere(){
-	position = Vector3();
 	radius = 0;
-	color = Color();
 }
 
 Sphere::Sphere(Vector3& center, double radius){

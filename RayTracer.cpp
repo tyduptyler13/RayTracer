@@ -1,9 +1,6 @@
-#include<iostream>
-#include<fstream>
-#include<sstream>
-#include<string>
-#include<regex>
-#include<vector>
+#include <iostream>
+#include <string>
+#include <regex>
 
 #include "Scene.hpp"
 #include "Sphere.hpp"
@@ -22,116 +19,8 @@ public:
 
 };
 
-void parseObj(std::string& filename, RayTracer& raytracer){
-	std::ifstream file(filename);
-
-	std::string line;
-
-	while(std::getline(file, line)){
-
-		if (line.length() == 0) continue;//Empty line.
-
-		std::stringstream ss;
-		std::string part1;
-
-		ss << line;
-
-		ss >> part1;
-
-		if (part1 == "s"){
-			double x, y, z, r;
-			std::string name;
-
-			ss >> name;
-
-			ss >> x;
-			ss >> y;
-			ss >> z;
-			ss >> r;
-
-			float red, green, blue;
-
-			ss >> red;
-			ss >> green;
-			ss >> blue;
-
-			Vector3 v = Vector3(x, y, z);
-			Sphere* s = new Sphere(v, r);
-			s->name = name;
-
-			s->color.set(red/255, green/255, blue/255);
-
-			raytracer.scene.addObject(s);
-
-		}
-
-	}
-
-	file.close();
-
-}
-
-void parseCmd(std::string& filename, RayTracer& raytracer){
-	std::ifstream file(filename);
-
-	std::string line, part1;
-
-	while(std::getline(file, line)){
-
-		if (line.length() == 0) continue;//Empty line.
-
-		std::stringstream ss;
-
-		ss << line;
-
-		ss >> part1;
-
-		if (part1 == "c"){
-
-			double x, y, z, near, far;
-			std::string name;
-
-			ss >> name;
-			ss >> x;
-			ss >> y;
-			ss >> z;
-
-			Vector3 prp(x, y, z);
-
-			ss >> x;
-			ss >> y;
-			ss >> z;
-
-			Vector3 pnp(x, y, z);
-
-			ss >> near;
-			ss >> far;
-
-			Camera* c = new Camera(prp, pnp, near, far);
-			c->setName(name);
-
-			raytracer.scene.addCamera(c);
-
-		} else if (part1 == "r"){
-
-			std::string name;
-			std::size_t width, height;
-			unsigned recursion;
-
-			ss >> name;
-			ss >> width;
-			ss >> height;
-			ss >> recursion;
-
-			raytracer.scene.render(name, width, height, recursion);
-
-		}
-
-	}
-
-	file.close();
-
-}
+#include "FileParser.hpp"
+//Moved the parsing functions to their own file to clean things up.
 
 bool matches(const std::string& regex, const std::string& input){
 
@@ -161,7 +50,7 @@ int main(int argc, char** argv){
 			std::string objTest = ".+\\.(obj)";
 			if (matches(objTest, arg)){
 
-				parseObj(arg, *raytracer);
+				parseObj(arg, raytracer->scene);
 
 			} else if (arg == "-c"){
 
@@ -169,7 +58,7 @@ int main(int argc, char** argv){
 
 					arg = std::string(argv[++i]);
 
-					parseCmd(arg, *raytracer);
+					parseCmd(arg, raytracer->scene);
 
 				} else {
 

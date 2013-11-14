@@ -45,7 +45,7 @@ public:
 
 	virtual ~Object3D(){};
 
-	Color color;
+	Material material;
 
 	virtual bool containsPoint(const Vector3& point) const = 0;
 	virtual bool getIntersection(const Projector&, Intersect&) const = 0;

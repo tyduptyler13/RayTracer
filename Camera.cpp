@@ -64,9 +64,10 @@ void Camera::render(MonoImage& distance, ColorImage& color, const Scene& scene,
 			Intersect nearest = intersections[0];
 
 			distance.set(x, y, nearest.distance / (p.far - p.near)); //Normalized distance value.
-			color.set(x, y, nearest.object->color); //Use this for now.
+			color.set(x, y, nearest.color); //Use this for now.
 
 			//TODO New rendering stuff. Needs shading and color.
+			//This shading will be on a per object basis.
 
 		}
 
