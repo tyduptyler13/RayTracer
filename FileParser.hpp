@@ -27,6 +27,11 @@ std::map<std::string, Material> materials;
 void parsemtl(std::string& filename){
 	std::ifstream file(filename);
 
+	if (!file.is_open()){
+		std::cout << "File " << filename << " does not seem to exist." << std::endl;
+		return;
+	}
+
 	std::string line;
 
 	Material cm;
@@ -35,7 +40,7 @@ void parsemtl(std::string& filename){
 
 	while(std::getline(file, line)){
 
-		if (line.length() == 0) continue;
+		if (line.length() == 0 || line[0] == '#') continue;
 
 		std::stringstream ss;
 
@@ -92,19 +97,26 @@ void parsemtl(std::string& filename){
 void parseObj(std::string& filename, Scene& scene){
 	std::ifstream file(filename);
 
+	if (!file.is_open()){
+
+		std::cout << "File " << filename << " does not seem to exist." << std::endl;
+		return;
+
+	}
+
 	std::string line;
+
+	//State machine parts.
+	std::string cm; //Current material name.
+	Group* cg = NULL;//Current group.
+	std::vector<Vector3> vectorList;//Zero based list of vertices.
 
 	while(std::getline(file, line)){
 
-		if (line.length() == 0) continue;//Empty line.
+		if (line.length() == 0 || line[0] == '#') continue;//Empty line or comment.
 
 		std::stringstream ss;
 		std::string part1;
-
-		//State machine parts.
-		std::string cm; //Current material name.
-		Group* cg = NULL;//Current group.
-		std::vector<Vector3> vectorList;//Zero based list of vertices.
 
 		ss << line;
 
@@ -115,7 +127,9 @@ void parseObj(std::string& filename, Scene& scene){
 			double x, y, z;
 			ss >> x >> y >> z;
 
-			vectorList.push_back(Vector3(x, y, z));
+			Vector3 tmp(x, y, z);
+
+			vectorList.push_back(tmp);
 
 		} else if (part1 == "s"){
 			double x, y, z, r;
@@ -142,22 +156,22 @@ void parseObj(std::string& filename, Scene& scene){
 
 			ss >> a >> b >> c;
 
+			Object3D* face;
+
 			if ((ss >> d).fail() || !(ss >> std::ws).eof()){
-				Face3* face = new Face3(vectorList[a+1], vectorList[b+1], vectorList[c+1]);
-				cg->addChild(face);
+				face = new Face3(vectorList[a-1], vectorList[b-1], vectorList[c-1]);
 			} else {
-				Face4* face = new Face4(vectorList[a+1], vectorList[b+1], vectorList[c+1], vectorList[d+1]);
-				cg->addChild(face);
+				face = new Face4(vectorList[a-1], vectorList[b-1], vectorList[c-1], vectorList[d-1]);
 			}
 
 			if (cg == NULL){
 
 				std::cout << "WARNING: Group was not defined. Adding raw face." << std::endl;
-
+				scene.addObject(face);
 
 			} else {
 
-
+				cg->addChild(face);
 
 			}
 
@@ -176,10 +190,14 @@ void parseObj(std::string& filename, Scene& scene){
 
 		} else if (part1 == "mtllib"){
 
-			std::string filename;
-			ss >> filename;
+			std::string mtlfile;
+			ss >> mtlfile;
 
-			parsemtl(filename);
+			std::string path = filename.substr(0, filename.find_last_of("/\\") + 1);
+
+			mtlfile = path + mtlfile;
+
+			parsemtl(mtlfile);
 
 		}
 

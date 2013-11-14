@@ -64,6 +64,7 @@ bool Face3::getIntersection(const Projector& p, Intersect& i) const{
 
 	i.point = point;
 	i.distance = dist - p.near;//Adjusted distance.
+	i.color = material.diffuse;
 
 	return true;
 

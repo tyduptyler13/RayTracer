@@ -54,12 +54,15 @@ bool Sphere::getIntersection(const Projector& p, Intersect& i) const{
 
 	double totalDistance = directionDistance - innerDistance;
 
-	i.distance = totalDistance - p.near; //Adjusted distance value.
-	i.point = p.ray.at(totalDistance);
-
-	if (i.distance < p.near || i.distance > p.far){
+	if (totalDistance < p.near || totalDistance > p.far){
 		return false;
 	}
+
+	i.distance = totalDistance - p.near; //Adjusted distance value.
+	i.point = p.ray.at(totalDistance);
+	i.color = material.diffuse;
+
+	//TODO calculate actual color.
 
 	return true;
 
