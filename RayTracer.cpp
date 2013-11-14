@@ -19,8 +19,8 @@ public:
 
 };
 
-#include "FileParser.hpp"
 //Moved the parsing functions to their own file to clean things up.
+#include "FileParser.hpp"
 
 bool matches(const std::string& regex, const std::string& input){
 

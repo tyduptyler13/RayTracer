@@ -8,7 +8,7 @@
 #ifndef OBJECT_HPP_
 #define OBJECT_HPP_
 
-#include<string>
+#include <string>
 
 #include "Vector3.hpp"
 #include "ImageTools.hpp"
