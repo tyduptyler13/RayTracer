@@ -70,7 +70,7 @@ public:
 
 	bool getIntersection(const Projector& p, Intersect& i) const{
 
-		if (box.containsPoint(p.ray.closestPointToPoint(box.center()))){
+		//if (box.containsPoint(p.ray.closestPointToPoint(box.center()))){
 
 			std::vector<Intersect> intersections;
 
@@ -98,11 +98,11 @@ public:
 
 			}
 
-		} else {
-
-			return false;
-
-		}
+//		} else {
+//
+//			return false;
+//
+//		}
 
 	}
 

@@ -41,6 +41,19 @@ public:
 
 class Object3D : public Object{
 
+protected:
+
+	Object3D(){}
+
+	Object3D(const Object3D& o){
+		material = o.material;
+	}
+
+	Object3D& operator=(const Object3D& o){
+		material = o.material;
+		return *this;
+	}
+
 public:
 
 	virtual ~Object3D(){};

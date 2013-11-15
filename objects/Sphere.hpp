@@ -22,6 +22,8 @@ public:
 	}
 
 	Sphere& operator=(const Sphere& s){
+		Object3D::operator=(s);
+
 		position = s.position;
 		radius = s.radius;
 

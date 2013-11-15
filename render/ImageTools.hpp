@@ -14,7 +14,7 @@
 #define MAX 256
 
 /**
- * By default this will always go to black.
+ * By default this will always go to white.
  */
 class Color{
 
@@ -24,9 +24,9 @@ public:
 	float b;
 
 	Color(){
-		r = 0;
-		g = 0;
-		b = 0;
+		r = 1;
+		g = 1;
+		b = 1;
 	}
 
 	Color(float r, float g, float b) : r(r), g(g), b(b) {}

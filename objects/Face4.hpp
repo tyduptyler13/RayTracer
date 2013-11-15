@@ -15,37 +15,39 @@
 
 class Face4 : public Object3D{
 
+	Vector3 a, b, c, d;
+
 public:
-	Vector3 a, b, c, d, normal;
 
 	Face4(){}
 	Face4(const Vector3& a, const Vector3& b, const Vector3& c, const Vector3& d)
-	: a(a), b(b), c(c), d(d){
-		computeNormal();
-	}
-	Face4(const Face4& f){
+	: a(a), b(b), c(c), d(d){}
+
+	Face4(const Face4& f) : Object3D(f){
 		a = f.a;
 		b = f.b;
 		c = f.c;
 		d = f.d;
-
-		computeNormal();
 	}
 
-	Face4& set(const Vector3& a, const Vector3& b, const Vector3& c){
-		this->a = a;
-		this->b = b;
-		this->c = c;
-		return *this;
-	}
+	Face4& set(const Vector3& a, const Vector3& b, const Vector3& c, const Vector3& d){
+			this->a = a;
+			this->b = b;
+			this->c = c;
+			this->d = d;
+
+			return *this;
+		}
 
 	Face4& operator=(const Face4& f){
+
+		Object3D::operator=(f);
+
 		a = f.a;
 		b = f.b;
 		c = f.c;
 		d = f.d;
 
-		computeNormal();
 		return *this;
 	}
 
@@ -66,15 +68,6 @@ public:
 
 		return points;
 
-	}
-
-	/**
-	 * This assumes the quad is flat!
-	 * If this is not true then a specialized subclass will be required
-	 * that computes all of the normals for each vertices.
-	 */
-	void computeNormal(){
-		normal = (b-a).cross(c-a);
 	}
 
 };

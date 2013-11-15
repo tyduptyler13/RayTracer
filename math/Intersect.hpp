@@ -21,7 +21,7 @@ class Intersect{
 
 public:
 	Vector3 point;
-	Color color;
+	Material material;
 	double distance;
 
 	Intersect(){
@@ -31,12 +31,10 @@ public:
 	Intersect(const Intersect& i){
 
 		point = i.point;
-		color = i.color;
+		material = i.material;
 		distance = i.distance;
 
 	}
-
-	Intersect(Vector3& point, Color& color, double distance): point(point), color(color), distance(distance){}
 
 	bool operator<(const Intersect& rhs) const{
 		return (distance < rhs.distance);
@@ -49,7 +47,7 @@ public:
 	Intersect& operator=(const Intersect& i){
 
 		point = i.point;
-		color = i.color;
+		material = i.material;
 		distance = i.distance;
 
 		return *this;

@@ -21,10 +21,11 @@ bool Face3::getIntersection(const Projector& p, Intersect& i) const{
 		return false;
 	}
 
-	double t1 = -normal.dot(p.ray.origin - a);
+
+	double t1 = (-normal).dot(p.ray.origin - a);
 	double t2 = normal.dot(p.ray.direction);
 
-	if (std::abs(t2) < 0.00000001){
+	if (std::abs(t2) < 0.00000001){//Parallel.
 		return false;
 	}
 
@@ -34,7 +35,7 @@ bool Face3::getIntersection(const Projector& p, Intersect& i) const{
 		return false;
 	}
 
-	Vector3 point = a + p.ray.direction * r;
+	Vector3 point = p.ray.origin + (p.ray.direction * r);
 
 	double uu, uv, vv, wu, wv, D;
 	uu = u.dot(u);
@@ -56,6 +57,9 @@ bool Face3::getIntersection(const Projector& p, Intersect& i) const{
 		return false;
 	}
 
+	//Debug. An alternate way to get the point. Should equal point.
+	//Vector3 tmp = a + (u * s) + (v * t);
+
 	double dist = point.distanceTo(p.ray.origin);
 
 	if (dist < p.near || dist > p.far){
@@ -64,7 +68,7 @@ bool Face3::getIntersection(const Projector& p, Intersect& i) const{
 
 	i.point = point;
 	i.distance = dist - p.near;//Adjusted distance.
-	i.color = material.diffuse;
+	i.material = material;
 
 	return true;
 

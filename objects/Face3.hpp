@@ -14,20 +14,20 @@
 
 class Face3 : public Object3D{
 
-	Vector3 u, v;
+	Vector3 u, v, a, b, c, normal;
 
 public:
-
-	Vector3 a, b, c, normal;
 
 	Face3();
 	Face3(const Vector3& a, const Vector3& b, const Vector3& c) : a(a), b(b), c(c) {
 		compute();
 	}
-	Face3(const Face3& f){
+	Face3(const Face3& f) : Object3D(f){
 		a = f.a;
 		b = f.b;
 		c = f.c;
+
+		normal = f.normal;
 	}
 
 	/**
@@ -35,9 +35,18 @@ public:
 	 * This allows for cached data to speed things up.
 	 */
 	void compute(){
-		u = b - a;
-		v = c - a;
-		normal = u.cross(v);
+		u = (b - a);
+		v = (c - a);
+		normal = u.cross(v).normalize();
+	}
+
+	Face3& set(const Vector3& a, const Vector3& b, const Vector3& c){
+		this->a = a;
+		this->b = b;
+		this->c = c;
+		compute();
+
+		return *this;
 	}
 
 	bool operator==(const Face3& f) const{
@@ -45,10 +54,14 @@ public:
 	}
 
 	Face3& operator=(const Face3& f){
+
+		Object3D::operator=(f);
+
 		a = f.a;
 		b = f.b;
 		c = f.c;
-		compute();
+
+		normal = f.normal;
 		return *this;
 	}
 

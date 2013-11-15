@@ -71,6 +71,10 @@ public:
 	Vector3& operator/=(double);
 
 	Vector3& negate();
+	friend Vector3 operator-(const Vector3& v){
+		Vector3 tmp(v);
+		return tmp.negate();
+	}
 
 	double dot(const Vector3& v) const{
 		return x * v.x + y * v.y + z * v.z;

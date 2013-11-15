@@ -4,14 +4,11 @@
 #include "Face3.hpp"
 
 /**
- * This uses the logic that a point when related to
- * a point known to exist on the plane,
- * the dot of this new vector and the normal will
- * be 0 if the point is on the plane.
+ * Being rewritten.
  */
 bool Face4::containsPoint(const Vector3& point) const{
 
-	return ((point-b).dot(normal) == 0);
+	return false;
 
 }
 
@@ -28,7 +25,7 @@ bool Face4::getIntersection(const Projector& p, Intersect& i) const{
 	/*
 	 *     A ---------- B
 	 *     |            |
-	 *     C------------D
+	 *     D------------C
 	 *
 	 * This algorithm will cut the face into triangles based on
 	 * closest points. It always will maintain the rotation of the
@@ -39,12 +36,16 @@ bool Face4::getIntersection(const Projector& p, Intersect& i) const{
 		//The edge between B and C is excluded but won't be required
 		//Based on the exclusion from the distances.
 
-		return Face3(a, b, c).getIntersection(p, i);
+		Face3 tmp(a, b, c);
+		tmp.material = this->material;
+		return tmp.getIntersection(p, i);
 
 	} else { //C to B and D
 		//The edge between D and B will be excluded in this test.
 
-		return Face3(c, b, d).getIntersection(p, i);
+		Face3 tmp(a, c, d);
+		tmp.material = this->material;
+		return tmp.getIntersection(p, i);
 
 	}
 }

@@ -28,7 +28,6 @@ class Camera : public Object{
 	Projector getProjector(size_t x, size_t y, size_t width, size_t height) const;
 
 public:
-	std::string name;
 
 	//Data now inherited from object. Direction is rotation.
 	double near;

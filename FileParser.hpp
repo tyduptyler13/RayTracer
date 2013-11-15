@@ -164,6 +164,12 @@ void parseObj(std::string& filename, Scene& scene){
 				face = new Face4(vectorList[a-1], vectorList[b-1], vectorList[c-1], vectorList[d-1]);
 			}
 
+			if (cm.empty()){
+				std::cout << "WARNING: Material was not specified. The object will have no color!" << std::endl;
+			} else {
+				face->material = materials.find(cm)->second;
+			}
+
 			if (cg == NULL){
 
 				std::cout << "WARNING: Group was not defined. Adding raw face." << std::endl;
@@ -228,23 +234,24 @@ void parseCmd(std::string& filename, Scene& scene){
 			std::string name;
 
 			ss >> name;
-			ss >> x;
-			ss >> y;
-			ss >> z;
+			ss >> x >> y >> z;
 
 			Vector3 prp(x, y, z);
 
-			ss >> x;
-			ss >> y;
-			ss >> z;
+			ss >> x >> y >> z;
 
 			Vector3 pnp(x, y, z);
+
+			ss >> x >> y >> z;
+
+			Vector3 up(x, y, z);
 
 			ss >> near;
 			ss >> far;
 
 			Camera* c = new Camera(prp, pnp, near, far);
 			c->setName(name);
+			c->up = up;
 
 			scene.addCamera(c);
 

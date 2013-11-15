@@ -10,7 +10,7 @@ Sphere::Sphere(Vector3& center, double radius){
 	this->radius = radius;
 }
 
-Sphere::Sphere(const Sphere& s){
+Sphere::Sphere(const Sphere& s) : Object3D(s){
 	position = s.position;
 	radius = s.radius;
 }
@@ -60,7 +60,7 @@ bool Sphere::getIntersection(const Projector& p, Intersect& i) const{
 
 	i.distance = totalDistance - p.near; //Adjusted distance value.
 	i.point = p.ray.at(totalDistance);
-	i.color = material.diffuse;
+	i.material = material;
 
 	//TODO calculate actual color.
 
