@@ -21,12 +21,14 @@ Projector Camera::getProjector(size_t x, size_t y, size_t width, size_t height) 
 
 	//New camera coordinate system.
 	Vector3 right = up.cross(direction);
+	Vector3 up2 = direction.cross(right);//Improved up in case they are "wrong".
 
-	Vector3 vpn = direction * -near;
+	Vector3 vpn = direction * (-near);
 	Vector3 u = right * nx;
-	Vector3 v = up * ny;
+	Vector3 v = up2 * ny;
 	Vector3 point = vpn + u + v;
 
+	//This needs to be checked. It was failing intersections with weird values.
 	double dist = point.length(); //Adjusted near.
 
 	//Similar Triangles.

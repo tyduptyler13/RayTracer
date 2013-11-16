@@ -152,6 +152,8 @@ void parseObj(std::string& filename, Scene& scene){
 
 		} else if (part1 == "f"){
 
+			//continue;//Skip for now.
+
 			size_t a, b, c, d = 0;
 
 			ss >> a >> b >> c;

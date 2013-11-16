@@ -9,64 +9,77 @@
 #define FACE4_HPP_
 
 #include "Object.hpp"
+#include "Face3.hpp"
 #include "Intersect.hpp"
-#include "Vector3.hpp"
 #include "Projector.hpp"
 
+/**
+ * Facade for two three sided faces.
+ *
+ * It seems to be equally efficient.
+ */
 class Face4 : public Object3D{
 
-	Vector3 a, b, c, d;
+	Face3 f1, f2;
 
 public:
 
+	/**
+	 *   A---------B
+	 *   |         |
+	 *   D---------C
+	 */
 	Face4(){}
-	Face4(const Vector3& a, const Vector3& b, const Vector3& c, const Vector3& d)
-	: a(a), b(b), c(c), d(d){}
+	Face4(const Vector3& a, const Vector3& b, const Vector3& c, const Vector3& d){
+		f1 = Face3(a, b, c);
+		f2 = Face3(a, c, d);
+	}
 
 	Face4(const Face4& f) : Object3D(f){
-		a = f.a;
-		b = f.b;
-		c = f.c;
-		d = f.d;
+		f1 = f.f1;
+		f2 = f.f2;
 	}
 
 	Face4& set(const Vector3& a, const Vector3& b, const Vector3& c, const Vector3& d){
-			this->a = a;
-			this->b = b;
-			this->c = c;
-			this->d = d;
+		f1 = Face3(a, b, c);
+		f2 = Face3(a, c, d);
 
-			return *this;
-		}
+		return *this;
+	}
 
 	Face4& operator=(const Face4& f){
 
 		Object3D::operator=(f);
 
-		a = f.a;
-		b = f.b;
-		c = f.c;
-		d = f.d;
+		f1 = f.f1;
+		f2 = f.f2;
 
 		return *this;
 	}
 
 	bool operator==(const Face4& f) const{
-		return ((a == f.a) && (b == f.b) && (c == f.c) && (d == f.d));
+		return (f1 == f.f1 && f2 == f.f2);
 	}
 
-	bool containsPoint(const Vector3& point) const;
-	bool getIntersection(const Projector&, Intersect&) const;
-	std::vector<Vector3> getPoints() const{
+	bool containsPoint(const Vector3& point) const{
 
-		std::vector<Vector3> points;
+		return (f1.containsPoint(point) || f2.containsPoint(point));
 
-		points.push_back(a);
-		points.push_back(b);
-		points.push_back(c);
-		points.push_back(d);
+	}
 
-		return points;
+	/**
+	 * This finds if the ray comes closer to a or d and then calculates
+	 * the intersection based on the fact that this quad can be split
+	 * into two triangles.
+	 */
+	bool getIntersection(const Projector& p, Intersect& i) const{
+
+		if (f1.getIntersection(p, i) || f2.getIntersection(p, i)){
+			i.material = material;
+			return true;
+		}
+
+		return false;
 
 	}
 

@@ -17,15 +17,14 @@ bool Face3::containsPoint(const Vector3& point) const{
 
 bool Face3::getIntersection(const Projector& p, Intersect& i) const{
 
-	if (normal == Vector3(0, 0, 0)){//Bad triangle.
+	if (normal.lengthSq() == 0){//Bad triangle.
 		return false;
 	}
 
-
-	double t1 = (-normal).dot(p.ray.origin - a);
+	double t1 = -normal.dot(p.ray.origin - a);
 	double t2 = normal.dot(p.ray.direction);
 
-	if (std::abs(t2) < 0.00000001){//Parallel.
+	if (std::abs(t2) < 0.0000001){//Parallel
 		return false;
 	}
 
@@ -35,9 +34,10 @@ bool Face3::getIntersection(const Projector& p, Intersect& i) const{
 		return false;
 	}
 
-	Vector3 point = p.ray.origin + (p.ray.direction * r);
+	Vector3 point = p.ray.at(r);
 
 	double uu, uv, vv, wu, wv, D;
+
 	uu = u.dot(u);
 	uv = u.dot(v);
 	vv = v.dot(v);
@@ -57,17 +57,12 @@ bool Face3::getIntersection(const Projector& p, Intersect& i) const{
 		return false;
 	}
 
-	//Debug. An alternate way to get the point. Should equal point.
-	//Vector3 tmp = a + (u * s) + (v * t);
-
-	double dist = point.distanceTo(p.ray.origin);
-
-	if (dist < p.near || dist > p.far){
+	if (r < p.near || r > p.far){
 		return false;
 	}
 
 	i.point = point;
-	i.distance = dist - p.near;//Adjusted distance.
+	i.distance = r - p.near;//Adjusted distance.
 	i.material = material;
 
 	return true;

@@ -18,7 +18,7 @@ class Face3 : public Object3D{
 
 public:
 
-	Face3();
+	Face3(){};
 	Face3(const Vector3& a, const Vector3& b, const Vector3& c) : a(a), b(b), c(c) {
 		compute();
 	}
@@ -37,7 +37,7 @@ public:
 	void compute(){
 		u = (b - a);
 		v = (c - a);
-		normal = u.cross(v).normalize();
+		normal = u.cross(v);
 	}
 
 	Face3& set(const Vector3& a, const Vector3& b, const Vector3& c){
@@ -67,17 +67,6 @@ public:
 
 	bool containsPoint(const Vector3& point) const;
 	bool getIntersection(const Projector&, Intersect&) const;
-	std::vector<Vector3> getPoints() const{
-
-		std::vector<Vector3> points;
-
-		points.push_back(a);
-		points.push_back(b);
-		points.push_back(c);
-
-		return points;
-
-	}
 
 };
 

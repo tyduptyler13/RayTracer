@@ -1,13 +1,7 @@
 RayTracer
-
-#A bug in one of my eclipse projects...
-.classpath
-
-.project
-.settings
-.cproject
+!.git*
+.*
 *.exe
-*.ppm
 
 # Compiled Object files
 *.slo
@@ -25,3 +19,7 @@ RayTracer
 
 /tydup13.tar
 test/
+
+*.png
+*.ppm
+

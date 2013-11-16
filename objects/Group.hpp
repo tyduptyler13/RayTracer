@@ -23,7 +23,6 @@
 class Group : public Object3D{
 
 	std::vector<Object3D*> children;
-	Box box;
 
 public:
 
@@ -45,22 +44,16 @@ public:
 	Group& addChild(Object3D* child){
 		children.push_back(child);
 
-		for(Vector3 point : child->getPoints()){
-			box.addPoint(point);
-		}
-
 		return *this;
 	}
 
 	bool containsPoint(const Vector3& point) const{
-		if (box.containsPoint(point)){
 
-			for (size_t i = 0; i < children.size(); ++i){
 
-				if (children[i]->containsPoint(point)){
-					return true;
-				}
+		for (size_t i = 0; i < children.size(); ++i){
 
+			if (children[i]->containsPoint(point)){
+				return true;
 			}
 
 		}
@@ -70,54 +63,31 @@ public:
 
 	bool getIntersection(const Projector& p, Intersect& i) const{
 
-		//if (box.containsPoint(p.ray.closestPointToPoint(box.center()))){
+		std::vector<Intersect> intersections;
 
-			std::vector<Intersect> intersections;
+		for (size_t x = 0; x < children.size(); ++x){
 
-			for (size_t x = 0; x < children.size(); ++x){
+			if (children[x]->getIntersection(p, i)){
 
-				if (children[x]->getIntersection(p, i)){
-
-					intersections.push_back(i);
-
-				}
+				intersections.push_back(i);
 
 			}
-
-			if (intersections.size() > 0){
-
-				std::sort(intersections.begin(), intersections.end());
-
-				i = intersections[0];
-
-				return true;
-
-			} else {
-
-				return false; //No hits.
-
-			}
-
-//		} else {
-//
-//			return false;
-//
-//		}
-
-	}
-
-	std::vector<Vector3> getPoints() const{
-
-		std::vector<Vector3> points;
-
-		for (size_t i = 0; i < children.size(); ++i){
-
-			std::vector<Vector3> cpoints = children[i]->getPoints();
-			points.insert(points.end(), cpoints.begin(), cpoints.end());
 
 		}
 
-		return points;
+		if (intersections.size() > 0){
+
+			std::sort(intersections.begin(), intersections.end());
+
+			i = intersections[0];
+
+			return true;
+
+		} else {
+
+			return false; //No hits.
+
+		}
 
 	}
 
