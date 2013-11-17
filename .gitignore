@@ -17,7 +17,7 @@ RayTracer
 *.la
 *.a
 
-/tydup13.tar
+*.tar*
 test/
 
 *.png

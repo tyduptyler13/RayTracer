@@ -40,6 +40,8 @@ Future Flags
 
 `-ss` - Enable spacial splits. (Will break all sections recursively into manageable blocks to check intersections.)
 
+`-aa` - Anti-Alias (Uses super sampling to fix aliasing of edges.)
+
 Current Supported Formats
 ----
 .obj: `g`,`f`,`mtllib`,`usemtl`,`#`,`v`,`s`
