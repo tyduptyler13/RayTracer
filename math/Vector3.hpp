@@ -62,6 +62,9 @@ public:
 		tmp *= s;
 		return tmp;
 	}
+	friend Vector3 operator*(double s, const Vector3& v){
+		return v * s;
+	}
 	Vector3& operator*=(const Vector3&);
 
 	Vector3& applyMatrix3(const Matrix3&);

@@ -61,8 +61,7 @@ bool Sphere::getIntersection(const Projector& p, Intersect& i) const{
 	i.distance = totalDistance - p.near; //Adjusted distance value.
 	i.point = p.ray.at(totalDistance);
 	i.material = material;
-
-	//TODO calculate actual color.
+	i.normal = (i.point - position).normalize();
 
 	return true;
 

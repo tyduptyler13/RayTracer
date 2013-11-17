@@ -27,6 +27,9 @@ public:
 		b = f.b;
 		c = f.c;
 
+		u = f.u;
+		v = f.v;
+
 		normal = f.normal;
 	}
 
@@ -37,7 +40,7 @@ public:
 	void compute(){
 		u = (b - a);
 		v = (c - a);
-		normal = u.cross(v);
+		normal.crossVectors(u, v);
 	}
 
 	Face3& set(const Vector3& a, const Vector3& b, const Vector3& c){
@@ -61,7 +64,11 @@ public:
 		b = f.b;
 		c = f.c;
 
+		u = f.u;
+		v = f.v;
+
 		normal = f.normal;
+
 		return *this;
 	}
 

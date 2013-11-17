@@ -21,6 +21,18 @@ public:
 	Light(){}
 	Light(Vector4& position, Color& color) : position(position), color(color) {}
 
+	Vector3 getDirection(const Vector3& point) const{
+
+		Vector3 ret(position.x, position.y, position.z);
+
+		if (position.w == 0){
+			return ret.normalize();
+		} else {
+			return (ret -= point);
+		}
+
+	}
+
 };
 
 #endif /* LIGHT_HPP_ */

@@ -15,6 +15,7 @@
 #include "Vector3.hpp"
 #include "ImageTools.hpp"
 #include "Projector.hpp"
+#include "Ray.hpp"
 //#include "Scene.hpp"
 
 class Scene;
@@ -33,9 +34,10 @@ public:
 	double near;
 	double far;
 
-	Camera(Vector3& prp, Vector3& vpn, double near, double far) : near(near), far(far) {
+	Camera(const Vector3& prp,const Vector3& vpn, double near, double far) : near(near), far(far) {
 		position = prp;
 		rotation = vpn;
+		rotation.normalize();
 	}
 
 	/**
