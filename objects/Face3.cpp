@@ -17,53 +17,68 @@ bool Face3::containsPoint(const Vector3& point) const{
 
 bool Face3::getIntersection(const Projector& p, Intersect& i) const{
 
-	if (normal.lengthSq() == 0){//Bad triangle.
+	double ddnorm = p.ray.direction.dot(normal);
+	double sign; //Easier than casting it all the time.
+
+	if (ddnorm > 0){
+
+		if (p.backfaceCulling) return false;
+		sign = 1;
+
+	} else if (ddnorm < 0){
+
+		sign = -1;
+		ddnorm = -ddnorm;
+
+	} else {
+
+		return false;
+
+	}
+
+	Vector3 diff = p.ray.origin - a;
+	//Direction dot diff cross v
+	double dddxv = sign * p.ray.direction.dot(diff.cross(v));
+
+	if (dddxv < 0){
+
+		return false;
+
+	}
+
+	//Direction dot u cross diff
+	double dduxd = sign * p.ray.direction.dot(u.cross(diff));
+
+	if (dduxd < 0){
+
+		return false;
+
+	}
+
+	if (dddxv + dduxd > ddnorm){
+
+		return false;
+
+	}
+
+	double diffdnorm = -sign * diff.dot(normal);
+
+	if (diffdnorm < 0){
+
+		return false;
+
+	}
+
+	double dist = diffdnorm / ddnorm;
+
+	if (dist < p.near || dist > p.far){
 		return false;
 	}
 
-	double t1 = -normal.dot(p.ray.origin - a);
-	double t2 = normal.dot(p.ray.direction);
-
-	if (std::abs(t2) < 0.0000001){//Parallel
-		return false;
-	}
-
-	double r = t1 / t2;
-
-	if (r < 0){ //Wrong direction.
-		return false;
-	}
-
-	Vector3 point = p.ray.at(r);
-
-	double uu, uv, vv, wu, wv, D;
-
-	uu = u.dot(u);
-	uv = u.dot(v);
-	vv = v.dot(v);
-	Vector3 w = point - a;
-	wu = w.dot(u);
-	wv = w.dot(v);
-	D = uv * uv - uu * vv;
-
-	double s, t;
-	s = (uv * wv - vv * wu) / D;
-	if (s < 0 || s > 1){
-		return false;
-	}
-
-	t = (uv * wu - uu * wv) / D;
-	if (t < 0 || (s+t) > 1){
-		return false;
-	}
-
-	if (r < p.near || r > p.far){
-		return false;
-	}
-
-	i.point = point;
-	i.distance = r - p.near;//Adjusted distance.
+	i.point = p.ray.at(dist);
+	i.distance = dist - p.near;//Adjusted distance.
 	i.material = material;
+	i.normal = normal;
 
 	return true;
 

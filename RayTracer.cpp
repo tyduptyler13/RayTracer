@@ -41,28 +41,41 @@ int main(int argc, char** argv){
 		std::cout << "This program expects at least 2 arguments." << std::endl;
 		return 0;
 	} else {
+
 		RayTracer* raytracer = new RayTracer();
 
-		for (int i = 1; i < argc; ++i){
+		if (argc == 3){
 
-			std::string arg = std::string(argv[i]);
+			std::string obj(argv[1]);
+			std::string cmd(argv[2]);
 
-			std::string objTest = ".+\\.(obj)";
-			if (matches(objTest, arg)){
+			parseObj(obj, raytracer->scene);
+			parseCmd(cmd, raytracer->scene);
 
-				parseObj(arg, raytracer->scene);
+		} else {
 
-			} else if (arg == "-c"){
+			for (int i = 1; i < argc; ++i){
 
-				if (i + 1 < argc){
+				std::string arg = std::string(argv[i]);
 
-					arg = std::string(argv[++i]);
+				std::string objTest = ".+\\.(obj)";
+				if (matches(objTest, arg)){
 
-					parseCmd(arg, raytracer->scene);
+					parseObj(arg, raytracer->scene);
 
-				} else {
+				} else if (arg == "-c"){
 
-					std::cout << "Expected an argument after '-c'. This parameter will be ignored!" << std::endl;
+					if (i + 1 < argc){
+
+						arg = std::string(argv[++i]);
+
+						parseCmd(arg, raytracer->scene);
+
+					} else {
+
+						std::cout << "Expected an argument after '-c'. This parameter will be ignored!" << std::endl;
+
+					}
 
 				}
 

@@ -15,6 +15,8 @@
 #include "Intersect.hpp"
 #include "Projector.hpp"
 
+class Scene;
+
 class Object{
 
 public:
@@ -62,6 +64,8 @@ public:
 
 	virtual bool containsPoint(const Vector3& point) const = 0;
 	virtual bool getIntersection(const Projector&, Intersect&) const = 0;
+
+	Color shade(const Ray& ray, const Intersect& i, const Scene& s) const;
 
 };
 

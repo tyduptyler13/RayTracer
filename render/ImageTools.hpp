@@ -18,6 +18,12 @@
  */
 class Color{
 
+	inline double clamp(double x){
+		if (x < 0) return 0;
+		if (x > 1) return 1;
+		return x;
+	}
+
 public:
 	float r;
 	float g;
@@ -53,6 +59,97 @@ public:
 		return *this;
 	}
 
+	Color operator*(const Color& c) const{
+		Color ret(*this);
+		ret *= c;
+		return ret;
+	}
+
+	Color& operator*=(const Color& c){
+
+		r *= c.r;
+		g *= c.g;
+		b *= c.b;
+
+		return *this;
+	}
+
+	Color operator*(double s) const{
+		Color ret(*this);
+		ret *= s;
+		return ret;
+	}
+
+	Color& operator*=(double s){
+
+		r *= s;
+		g *= s;
+		b *= s;
+
+		return *this;
+
+	}
+
+	Color operator+(const Color& c) const{
+		Color ret(*this);
+		ret += c;
+		return ret;
+	}
+
+	Color& operator+=(const Color& c){
+
+		r += c.r;
+		g += c.g;
+		b += c.b;
+
+		return *this;
+
+	}
+
+	Color operator/(const Color& c) const{
+		Color ret(*this);
+		ret /= c;
+		return ret;
+	}
+
+	Color& operator/=(const Color& c){
+
+		r /= c.r;
+		g /= c.g;
+		b /= c.b;
+
+		return *this;
+
+	}
+
+	Color operator/(double s) const{
+		Color ret(*this);
+		ret /= s;
+		return ret;
+	}
+
+	Color& operator/=(double s){
+
+		r /= s;
+		g /= s;
+		b /= s;
+
+		return *this;
+
+	}
+
+	inline bool isValid(){
+		return ((r <= 1 && r >= 0) &&
+				(g <= 1 && g >= 0) &&
+				(b <= 1 && b >= 0));
+	}
+
+	inline void clamp(){
+		r = clamp(r);
+		g = clamp(g);
+		b = clamp(b);
+	}
+
 };
 
 class Material{
@@ -68,7 +165,7 @@ public:
 	Material(){}
 	Material(std::string& name) : name(name) {}
 	Material(std::string& name, Color& diffuse, Color& specular, Color& ambient)
-		: name(name), diffuse(diffuse), specular(specular), ambient(ambient) {}
+	: name(name), diffuse(diffuse), specular(specular), ambient(ambient) {}
 
 	Material(const Material& m) : name(m.name), diffuse(m.diffuse), specular(m.specular), ambient(m.ambient) {}
 

@@ -65,6 +65,11 @@ void Scene::removeCamera(Camera* c){
 	}
 }
 
+//Nothing special to do for lights. They can exist on top of eachother.
+void Scene::addLight(Light* l){
+	lights.push_back(l);
+}
+
 void Scene::render(std::string name, std::size_t width, std::size_t height, unsigned recursion) const{
 
 	for (Camera* c : cameras){

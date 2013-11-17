@@ -21,18 +21,21 @@ class Intersect{
 
 public:
 	Vector3 point;
+	Vector3 normal;
 	Material material;
 	double distance;
+	Object3D* object;
 
-	Intersect(){
+	Intersect(Object3D* object) : object(object){
 		distance = 0;
 	}
 
-	Intersect(const Intersect& i){
+	Intersect(Object3D* object, const Intersect& i) : object(object) {
 
 		point = i.point;
 		material = i.material;
 		distance = i.distance;
+		normal = i.normal;
 
 	}
 
@@ -49,6 +52,9 @@ public:
 		point = i.point;
 		material = i.material;
 		distance = i.distance;
+		normal = i.normal;
+
+		object = i.object;
 
 		return *this;
 

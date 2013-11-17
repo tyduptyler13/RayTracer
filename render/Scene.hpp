@@ -26,6 +26,8 @@ public:
 	void addCamera(Camera* c);
 	void removeCamera(Camera* c);
 
+	void addLight(Light* l);
+
 	const std::vector<Object3D*>& getObjects() const{
 		return objects;
 	}

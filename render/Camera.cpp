@@ -7,7 +7,6 @@
 
 #include "Camera.hpp"
 #include "RayCaster.hpp"
-#include "Ray.hpp"
 #include "Scene.hpp"
 
 #include <cmath>
@@ -20,8 +19,8 @@ Projector Camera::getProjector(size_t x, size_t y, size_t width, size_t height) 
 	double ny = -(double(y * 2) / height - 1);
 
 	//New camera coordinate system.
-	Vector3 right = up.cross(direction);
-	Vector3 up2 = direction.cross(right);//Improved up in case they are "wrong".
+	Vector3 right = up.cross(direction).normalize();
+	Vector3 up2 = direction.cross(right).normalize();//Improved up in case they are "wrong".
 
 	Vector3 vpn = direction * (-near);
 	Vector3 u = right * nx;
@@ -49,7 +48,7 @@ void Camera::render(MonoImage& distance, ColorImage& color, const Scene& scene,
 
 	Color defaultColor = Color();
 
-	//#pragma omp parallel for
+	#pragma omp parallel for
 	for (std::size_t x = 0; x < width; ++x){
 
 		for (std::size_t y = 0; y < height; ++y){
@@ -68,10 +67,8 @@ void Camera::render(MonoImage& distance, ColorImage& color, const Scene& scene,
 
 			Intersect nearest = intersections[0];
 
-			distance.set(x, y, nearest.distance / (p.far - p.near)); //Normalized distance value.
-			color.set(x, y, nearest.material.diffuse); //Use this for now.
-
-			//TODO New rendering stuff. Needs shading and color.
+			distance.set(x, y, 1 - nearest.distance / (p.far - p.near)); //Normalized distance value.
+			color.set(x, y, nearest.object->shade(p.ray, nearest, scene));
 
 		}
 

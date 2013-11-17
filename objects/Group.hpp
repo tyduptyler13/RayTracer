@@ -69,6 +69,7 @@ public:
 
 			if (children[x]->getIntersection(p, i)){
 
+				i.object = children[x];
 				intersections.push_back(i);
 
 			}

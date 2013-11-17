@@ -32,6 +32,8 @@ void parsemtl(std::string& filename){
 		return;
 	}
 
+	std::cout << "Fetching materials from " << filename << std::endl;
+
 	std::string line;
 
 	Material cm;
@@ -103,6 +105,8 @@ void parseObj(std::string& filename, Scene& scene){
 		return;
 
 	}
+
+	std::cout << "Reading in " << filename << std::endl;
 
 	std::string line;
 
@@ -268,7 +272,21 @@ void parseCmd(std::string& filename, Scene& scene){
 			ss >> height;
 			ss >> recursion;
 
+			std::cout << "Rendering " << name + "(" << width << "x" << height << ")" << std::endl;
+
 			scene.render(name, width, height, recursion);
+
+		} else if (part1 == "l"){
+
+			double x, y, z, w, r, g, b;
+
+			ss >> x >> y >> z >> w >> r >> g >> b; //light x y z r g b
+
+			Vector4 pos(x, y, z, w);
+			Color c(r/255, g/255, b/255);
+			Light* l = new Light(pos, c);
+
+			scene.addLight(l);
 
 		}
 
