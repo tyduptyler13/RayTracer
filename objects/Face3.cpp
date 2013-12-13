@@ -17,7 +17,10 @@ bool Face3::containsPoint(const Vector3& point) const{
 
 bool Face3::getIntersection(const Projector& p, Intersect& i) const{
 
-	double ddnorm = p.ray.direction.dot(normal);
+	if (p.exempt == this)
+		return false;
+
+	double ddnorm = p.ray.direction.dot(nnormal);
 	double sign; //Easier than casting it all the time.
 
 	if (ddnorm > 0){
@@ -61,7 +64,7 @@ bool Face3::getIntersection(const Projector& p, Intersect& i) const{
 
 	}
 
-	double diffdnorm = -sign * diff.dot(normal);
+	double diffdnorm = -sign * diff.dot(nnormal);
 
 	if (diffdnorm < 0){
 

@@ -13,6 +13,8 @@
 #include <cmath>
 #include <iostream>
 
+long Object::idCount = 0;
+
 Color Object3D::shade(const Ray& ray, const Intersect& i, const Scene& s) const {
 
 	const std::vector<Light*> lights = s.getLights();
@@ -35,21 +37,21 @@ Color Object3D::shade(const Ray& ray, const Intersect& i, const Scene& s) const 
 			continue;
 		}
 
-		Ray r(i.point, dir);
-		Projector p(r, 0.000001, 1);
+		double dist = dir.length();
+
+		Ray r(i.point, dir.normalize());
+		Projector p(r, 0, dist, this);
 
 		if (rc.cast(s.getObjects(), p, 0).size() > 0){
 			continue; //An object is in the way.
 		}
 
-		//Normalized vectors. Its easiest to retrieve a normalized vector here.
-		dir.normalize();
-		(N = i.normal).normalize();
+		N = i.normal;
 
 		R = 2 * (dir.dot(N)) * N - dir;//Reflection ray.
 
 		final += l->color * material.diffuse * (dir.dot(N)); //Diffuse
-		final += l->color * material.specular * std::pow((v.dot(R)), 50);
+		final += l->color * material.specular * std::pow((v.dot(R)), 50); //Specular
 
 	}
 

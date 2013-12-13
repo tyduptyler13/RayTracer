@@ -3,7 +3,7 @@
 
 CC=g++
 
-FLAGS=-Wall -ansi -Wextra -pedantic -g -std=c++11
+FLAGS=-Wall -ansi -Wextra -pedantic $(SFLAGS) -std=c++11
 
 # Need to have all of the directories indexed.
 INCLUDE=-I../render -I../objects -I.

@@ -19,6 +19,10 @@ class Scene;
 
 class Object{
 
+	static long idCount;
+
+	long id;
+
 public:
 
 	std::string name;
@@ -28,6 +32,10 @@ public:
 	Vector3 scale;
 
 	Vector3 up = Vector3(0, 1, 0);//Default up.
+
+	Object(){
+		id = idCount++;
+	}
 
 	Object& setName(std::string name){
 		this->name = name;
@@ -39,15 +47,19 @@ public:
 		return *this;
 	}
 
+	bool operator==(const Object& o){
+		return id == o.id;
+	}
+
 };
 
 class Object3D : public Object{
 
 protected:
 
-	Object3D(){}
+	Object3D() : Object() {}
 
-	Object3D(const Object3D& o){
+	Object3D(const Object3D& o) : Object() {
 		material = o.material;
 	}
 

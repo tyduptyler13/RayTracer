@@ -1,11 +1,11 @@
 
 #include "Sphere.hpp"
 
-Sphere::Sphere(){
+Sphere::Sphere() : Object3D() {
 	radius = 0;
 }
 
-Sphere::Sphere(Vector3& center, double radius){
+Sphere::Sphere(Vector3& center, double radius) : Object3D() {
 	position = center;
 	this->radius = radius;
 }
@@ -30,6 +30,8 @@ bool Sphere::containsPoint(const Vector3& point) const{
 }
 
 bool Sphere::getIntersection(const Projector& p, Intersect& i) const{
+
+	if (p.exempt == this) return false;
 
 	//Modified closestPointToPoint{
 	Vector3 point = position - p.ray.origin;

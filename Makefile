@@ -1,9 +1,11 @@
 
-TARGET=HW2
+TARGET=RayTracer
 
 CC=g++
 
-FLAGS=-Wall -ansi -Wextra -pedantic -O4 -std=c++11
+export SFLAGS=-ffast-math
+
+FLAGS=-Wall -ansi -Wextra -pedantic $(SFLAGS) -O3 -std=c++11
 
 INCLUDE=-Irender -Iobjects -Imath
 
@@ -12,17 +14,17 @@ all: Math.o Render.o Objects.o RayTracer.cpp
 
 clean:
 	rm -f *.o $(TARGET)
-	cd math; make clean
-	cd objects; make clean
-	cd render; make clean
+	cd math; $(MAKE) clean
+	cd objects; $(MAKE) clean
+	cd render; $(MAKE) clean
 
 Math.o: FORCE
-	cd math; make
+	cd math; $(MAKE)
 
 Objects.o: FORCE
-	cd objects; make
+	cd objects; $(MAKE)
 
 Render.o: FORCE
-	cd render; make
+	cd render; $(MAKE)
 
 FORCE:

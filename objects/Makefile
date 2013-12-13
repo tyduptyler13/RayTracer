@@ -1,7 +1,7 @@
 
 CC=g++
 
-FLAGS=-Wall -ansi -Wextra -pedantic -g -std=c++11
+FLAGS=-Wall -ansi -Wextra -pedantic $(SFLAGS) -std=c++11
 
 INCLUDE=-I../math -I../render -I.
 

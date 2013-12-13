@@ -15,11 +15,12 @@
 class Face3 : public Object3D{
 
 	Vector3 u, v, a, b, c, normal;
+	Vector3 nnormal; //Not normal. (Its not normalized)
 
 public:
 
-	Face3(){};
-	Face3(const Vector3& a, const Vector3& b, const Vector3& c) : a(a), b(b), c(c) {
+	Face3() : Object3D() {};
+	Face3(const Vector3& a, const Vector3& b, const Vector3& c) : Object3D(), a(a), b(b), c(c) {
 		compute();
 	}
 	Face3(const Face3& f) : Object3D(f){
@@ -31,6 +32,7 @@ public:
 		v = f.v;
 
 		normal = f.normal;
+		nnormal = f.nnormal;
 	}
 
 	/**
@@ -41,6 +43,8 @@ public:
 		u = (b - a);
 		v = (c - a);
 		normal.crossVectors(u, v);
+		nnormal = normal; //Copy this.
+		normal.normalize();
 	}
 
 	Face3& set(const Vector3& a, const Vector3& b, const Vector3& c){
@@ -68,6 +72,7 @@ public:
 		v = f.v;
 
 		normal = f.normal;
+		nnormal = f.nnormal;
 
 		return *this;
 	}

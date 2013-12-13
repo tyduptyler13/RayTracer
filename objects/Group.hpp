@@ -26,8 +26,8 @@ class Group : public Object3D{
 
 public:
 
-	Group(){}
-	Group(std::string& name){
+	Group() : Object3D() {}
+	Group(std::string& name) : Object3D() {
 		this->name = name;
 	}
 
