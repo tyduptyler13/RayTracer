@@ -3,9 +3,9 @@ TARGET=RayTracer
 
 CC=g++
 
-export SFLAGS=-ffast-math
+export SFLAGS=-ffast-math -O3
 
-FLAGS=-Wall -ansi -Wextra -pedantic $(SFLAGS) -O3 -std=c++11
+FLAGS=-Wall -ansi -Wextra -pedantic $(SFLAGS) -std=c++11
 
 INCLUDE=-Irender -Iobjects -Imath
 

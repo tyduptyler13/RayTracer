@@ -10,6 +10,8 @@
 #include "Scene.hpp"
 
 #include <cmath>
+#include <ctime>
+#include <iostream>
 
 #define direction rotation
 
@@ -48,6 +50,8 @@ void Camera::render(MonoImage& distance, ColorImage& color, const Scene& scene,
 
 	Color defaultColor = Color();
 
+	std::clock_t start;
+
 	#pragma omp parallel for
 	for (std::size_t x = 0; x < width; ++x){
 
@@ -73,5 +77,7 @@ void Camera::render(MonoImage& distance, ColorImage& color, const Scene& scene,
 		}
 
 	}
+
+	std::cout << "Rendered " << name << " in: " << (std::clock() - start) / (double)(CLOCKS_PER_SEC / 1000) << " ms" << std::endl;
 
 }
