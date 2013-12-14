@@ -80,7 +80,7 @@ public:
 	/**
 	 * By default this will return the same ray. (Only defined for spheres currently)
 	 */
-	virtual Ray getRefraction(const Ray& r) const {
+	virtual Ray& getRefraction(Ray& r, const Vector3&) const {
 		return r;
 	}
 

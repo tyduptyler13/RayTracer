@@ -1,9 +1,9 @@
 
-TARGET=RayTracer
+TARGET=HW3
 
 CC=g++
 
-export SFLAGS=-g -Og
+export SFLAGS=-O3
 
 FLAGS=-Wall -ansi -Wextra -pedantic $(SFLAGS) -std=c++11
 

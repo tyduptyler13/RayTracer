@@ -78,6 +78,18 @@ Color Object3D::shade(const Ray& ray, const Intersect& i, const Scene& s, unsign
 
 		//Refraction
 		if (material.transparency < 1){
+			Color t;//Color behind transparent color.
+
+			Ray r(i.point, ray.direction);
+			getRefraction(r, i.normal);
+
+			Projector p(r, 0, std::numeric_limits<double>::infinity(), false);
+			std::vector<Intersect> list = rc.cast(s.getObjects(), p);
+			if (list.size() > 0){
+				t = list[0].object->shade(r, list[0], s, recursion);
+			}
+
+			final = final * material.transparency + t * (1-material.transparency);
 
 		}
 

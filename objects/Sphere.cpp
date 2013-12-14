@@ -52,9 +52,11 @@ bool Sphere::getIntersection(const Projector& p, Intersect& i) const{
 
 
 	//Distance from the point on the ray to both intersections. (could be 0 if hitting edge)
-	double innerDistance = sqrt(pow(radius, 2) - pow(shortestDistance, 2));
+	double innerDistance = sqrt(radius * radius - shortestDistance * shortestDistance);
 
 	double totalDistance = directionDistance - innerDistance;
+
+	//if (totalDistance < 0.0000001) totalDistance = directionDistance + innerDistance;//For internal rays. (Inside a sphere)
 
 	if (totalDistance < p.near || totalDistance > p.far){
 		return false;
@@ -66,5 +68,26 @@ bool Sphere::getIntersection(const Projector& p, Intersect& i) const{
 	i.normal = (i.point - position).normalize();
 
 	return true;
+
+}
+
+Ray& Sphere::getRefraction(Ray& r, const Vector3& normal) const{
+
+	if (r.direction.dot(normal) < 0){
+		double rc = sqrt(1 - material.Krf * material.Krf * (1 - (normal.dot(-r.direction))));
+		if (rc >= 0){
+			Vector3 tr = (material.Krf * (normal.dot(-r.direction)) - rc) * normal - (material.Kr * -r.direction);
+			r.direction = tr;
+		}
+	} else { //Leaving sphere.
+		double nr = 1 / material.Krf;
+		double rc = sqrt(1 - nr * nr * (1-(-normal.dot(-r.direction) * -normal.dot(-r.direction))));
+		if (rc >= 0){
+			Vector3 tr = (nr * (-normal.dot(-r.direction)) - rc) * -normal - (nr * -r.direction);
+			r.direction = tr;
+		}
+	}
+
+	return r;
 
 }
