@@ -17,10 +17,8 @@ public:
 	 */
 	bool backfaceCulling;
 
-	Projector(Ray& r, double near, double far, const Object3D* exempt = NULL)
-		: ray(r), near(near), far(far), exempt(exempt) {
-		backfaceCulling = true;
-	}
+	Projector(Ray& r, double near, double far, bool bc = true, const Object3D* exempt = NULL)
+		: ray(r), near(near), far(far), exempt(exempt), backfaceCulling(bc) {}
 
 };
 

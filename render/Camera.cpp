@@ -50,7 +50,7 @@ void Camera::render(MonoImage& distance, ColorImage& color, const Scene& scene,
 
 	Color defaultColor = Color();
 
-	std::clock_t start;
+	std::clock_t start = std::clock_t();
 
 	#pragma omp parallel for
 	for (std::size_t x = 0; x < width; ++x){
@@ -61,7 +61,7 @@ void Camera::render(MonoImage& distance, ColorImage& color, const Scene& scene,
 
 			RayCaster rc;
 
-			std::vector<Intersect> intersections = rc.cast(scene.getObjects(), p, recursion);
+			std::vector<Intersect> intersections = rc.cast(scene.getObjects(), p);
 
 			if (intersections.size() == 0){
 				distance.set(x, y, 0); //Default black.
@@ -72,7 +72,7 @@ void Camera::render(MonoImage& distance, ColorImage& color, const Scene& scene,
 			Intersect nearest = intersections[0];
 
 			distance.set(x, y, 1 - nearest.distance / (p.far - p.near)); //Normalized distance value.
-			color.set(x, y, nearest.object->shade(p.ray, nearest, scene));
+			color.set(x, y, nearest.object->shade(p.ray, nearest, scene, recursion));
 
 		}
 
@@ -81,3 +81,6 @@ void Camera::render(MonoImage& distance, ColorImage& color, const Scene& scene,
 	std::cout << "Rendered " << name << " in: " << (std::clock() - start) / (double)(CLOCKS_PER_SEC / 1000) << " ms" << std::endl;
 
 }
+
+
+

@@ -77,7 +77,14 @@ public:
 	virtual bool containsPoint(const Vector3& point) const = 0;
 	virtual bool getIntersection(const Projector&, Intersect&) const = 0;
 
-	Color shade(const Ray& ray, const Intersect& i, const Scene& s) const;
+	/**
+	 * By default this will return the same ray. (Only defined for spheres currently)
+	 */
+	virtual Ray getRefraction(const Ray& r) const {
+		return r;
+	}
+
+	Color shade(const Ray& ray, const Intersect& i, const Scene& s, unsigned recursion) const;
 
 };
 

@@ -30,9 +30,9 @@ public:
 	float b;
 
 	Color(){
-		r = 1;
-		g = 1;
-		b = 1;
+		r = 0;
+		g = 0;
+		b = 0;
 	}
 
 	Color(float r, float g, float b) : r(r), g(g), b(b) {}
@@ -63,6 +63,10 @@ public:
 		Color ret(*this);
 		ret *= c;
 		return ret;
+	}
+
+	friend Color operator*(double s, const Color& c){
+		return c * s;
 	}
 
 	Color& operator*=(const Color& c){
@@ -161,6 +165,25 @@ public:
 	Color diffuse;
 	Color specular;
 	Color ambient;
+
+	int Ns = 200;
+
+	/**
+	 * Refractive index.
+	 */
+	double n1 = 1;
+
+	double transparency = 1;
+
+	/**
+	 * Attenuation of relfection. (Kr)
+	 */
+	double Kr = 1;
+
+	/**
+	 * Attenuation of refraction. (Krf)
+	 */
+	double Krf = 1;
 
 	Material(){}
 	Material(std::string& name) : name(name) {}

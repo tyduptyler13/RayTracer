@@ -22,7 +22,7 @@ public:
 
 	RayCaster(){}
 
-	std::vector<Intersect> cast(const std::vector<Object3D*>&, const Projector&, unsigned recursion) const;
+	std::vector<Intersect> cast(const std::vector<Object3D*>&, const Projector&) const;
 
 };
 

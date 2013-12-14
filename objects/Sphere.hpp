@@ -42,6 +42,8 @@ public:
 
 	bool getIntersection(const Projector& p, Intersect& i) const;
 
+	Ray getRefraction(const Ray& r) const;
+
 };
 
 #endif

@@ -3,7 +3,7 @@ TARGET=RayTracer
 
 CC=g++
 
-export SFLAGS=-ffast-math -O3
+export SFLAGS=-g -Og
 
 FLAGS=-Wall -ansi -Wextra -pedantic $(SFLAGS) -std=c++11
 

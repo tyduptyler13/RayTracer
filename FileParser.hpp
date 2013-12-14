@@ -85,6 +85,26 @@ void parsemtl(std::string& filename){
 
 			cm.specular.set(r, g, b);
 
+		} else if (command == "Ns"){
+
+			ss >> cm.Ns;
+
+		} else if (command == "n1"){
+
+			ss >> cm.n1;
+
+		} else if (command == "Tr"){
+
+			ss >> cm.transparency;
+
+		} else if (command == "Kr"){
+
+			ss >> cm.Kr;
+
+		} else if (command == "Krf"){
+
+			ss >> cm.Krf;
+
 		}
 
 	}

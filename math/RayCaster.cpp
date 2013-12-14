@@ -12,7 +12,7 @@
 
 Vector3 origin;
 
-std::vector<Intersect> RayCaster::cast(const std::vector<Object3D*>& objects, const Projector& p, unsigned recursion) const{
+std::vector<Intersect> RayCaster::cast(const std::vector<Object3D*>& objects, const Projector& p) const{
 
 	std::vector<Intersect> intersects;
 
