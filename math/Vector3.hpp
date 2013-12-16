@@ -6,12 +6,6 @@
 
 #include <cmath>
 
-//#include "Matrix3.hpp" // Cyclic
-class Matrix3;
-//#include "Matrix4.hpp" // Cyclic
-class Matrix4;
-
-
 class Vector3{
 
 public:
@@ -67,8 +61,8 @@ public:
 	}
 	Vector3& operator*=(const Vector3&);
 
-	Vector3& applyMatrix3(const Matrix3&);
-	Vector3& applyMatrix4(const Matrix4&);
+//	Vector3& applyMatrix3(const Matrix3&);
+//	Vector3& applyMatrix4(const Matrix4&);
 
 	Vector3& operator/=(const Vector3&);
 	Vector3& operator/=(double);

@@ -9,7 +9,6 @@
 #define RAY_HPP_
 
 #include "Vector3.hpp"
-#include "Matrix4.hpp"
 
 class Ray{
 
@@ -29,7 +28,6 @@ public:
 	Vector3 closestPointToPoint(const Vector3& point) const;
 	Vector3& closestPointToPoint(const Vector3& point,  Vector3& target) const;
 	double distanceToPoint(const Vector3&) const;
-	Ray& applyMatrix4(const Matrix4&);
 	bool operator==(const Ray&) const;
 };
 

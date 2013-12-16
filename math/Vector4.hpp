@@ -2,7 +2,6 @@
 #ifndef Vector4_H__
 #define Vector4_H__
 
-#include "Matrix4.hpp"
 
 #include <cmath>
 
@@ -130,7 +129,7 @@ public:
 		return *this;
 	}
 
-	Vector4& applyMatrix4(Matrix4&);
+//	Vector4& applyMatrix4(Matrix4&);
 
 	Vector4& operator/=(double s){
 		if (s != 0){

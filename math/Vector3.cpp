@@ -1,7 +1,5 @@
 
 #include "Vector3.hpp"
-#include "Matrix3.hpp"
-#include "Matrix4.hpp"
 
 Vector3::Vector3(){
 	x = y = z = 0;
@@ -82,36 +80,36 @@ Vector3& Vector3::operator*=(double s){
 /**
  * Essentially Matrix * Vector
  */
-Vector3& Vector3::applyMatrix3(const Matrix3& m){
-	double x = this->x;
-	double y = this->y;
-	double z = this->z;
-
-	const double* e = m.toArray();
-
-	this->x = e[0] * x + e[3] * y + e[6] * z;
-	this->y = e[1] * x + e[4] * y + e[7] * z;
-	this->z = e[2] * x + e[5] * y + e[8] * z;
-
-	return *this;
-}
+//Vector3& Vector3::applyMatrix3(const Matrix3& m){
+//	double x = this->x;
+//	double y = this->y;
+//	double z = this->z;
+//
+//	const double* e = m.toArray();
+//
+//	this->x = e[0] * x + e[3] * y + e[6] * z;
+//	this->y = e[1] * x + e[4] * y + e[7] * z;
+//	this->z = e[2] * x + e[5] * y + e[8] * z;
+//
+//	return *this;
+//}
 
 /**
  * What Matrix4 x Vector3 would be.
  */
-Vector3& Vector3::applyMatrix4(const Matrix4& m){
-	double x = this->x;
-	double y = this->y;
-	double z = this->z;
-
-	const double* e = m.toArray();
-
-	this->x = e[0] * x + e[4] * y + e[8]  * z + e[12];
-	this->y = e[1] * x + e[5] * y + e[9]  * z + e[13];
-	this->z = e[2] * x + e[6] * y + e[10] * z + e[14];
-
-	return *this;
-}
+//Vector3& Vector3::applyMatrix4(const Matrix4& m){
+//	double x = this->x;
+//	double y = this->y;
+//	double z = this->z;
+//
+//	const double* e = m.toArray();
+//
+//	this->x = e[0] * x + e[4] * y + e[8]  * z + e[12];
+//	this->y = e[1] * x + e[5] * y + e[9]  * z + e[13];
+//	this->z = e[2] * x + e[6] * y + e[10] * z + e[14];
+//
+//	return *this;
+//}
 
 Vector3& Vector3::operator/=(double s){
 	if (s!=0){
