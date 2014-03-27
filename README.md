@@ -64,7 +64,7 @@ Future Flags
 
 Current Supported Formats
 ----
-.obj: `g`,`f`,`mtllib`,`usemtl`,`#`,`v`,`s`
+.obj: `g`, `f`, `mtllib`, `usemtl`, `#`, `v`, `s`
 
 .obj extension definitions:
 
@@ -77,12 +77,30 @@ Current Supported Formats
  * `Kr` is reflectivity value. (Default is 1)
  * `Tr` is transparency value. (Default is 1 aka opaque)
 
+__Command File:__
+* `l` - Light defined as follows: `l x y z w red green blue`
+  + w is the homogeneous value. A value other than 1 can cause effects like a sun or directional light.
+* `c` - Camera: `c name prp_x prp_y prp_z vpn_x vpx_y vpn_z vup_x vup_y vup_z near far`
+  + prp is the Perspective reference point aka where the camera is
+  + vpn is the View Point Normal aka where to point the camera
+  + vup is what the camera will consider the up vector. Changing this will rotate the camera.
+  + near is how far a ray must travel before it will be allowed to hit something.
+  + far is how far a ray can travel before it is considered a miss (objects beyond this plane won't render)
+* `r` - Render: `r name width height recursion_depth`
+  + Recusion_depth is the number of bounces a ray will make before it stops.
+
+Note: This renderer does not use the far plane in bounces so objects outside of the view plane can show up in
+reflections. This can be fixed by doing some simple changes in the reflection code but wasn't desired for this
+project.
+
 Current work
 ----
 The following is still work in progress and will not function correctly.
 
 1. Reflection (Still having bugs in various tests)
 2. Refraction (Doesn't work at all yet)
+3. OpenCL (Working on a realtime renderer for graphics cards that can handle the calculations.)
+  * Will have a minimum requirement when we complete this portion of the project.
 
 Building
 ----
