@@ -21,14 +21,7 @@ an opengl, opencl, cpu, etc... backend. This will allow for the most capability.
 * Final steps are to fix any issues in the new setup and improve performance.
 * Future: Increase capabilities and allow for dynamic performance.
 
-Examples
-----
-TODO
-
-Usage
-----
-`-h` || `--help` will request you view this document. If these are present then all other arguments are ignored.
-
+For all usage and examples, see the wiki.
 
 Building
 ----
